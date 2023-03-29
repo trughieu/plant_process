@@ -13,8 +13,6 @@ class _BodyState extends State<Body> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -25,172 +23,197 @@ class _BodyState extends State<Body> {
               ],
             ),
           ),
-          child: Column(
+          child: Stack(
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 100,
-                margin: const EdgeInsets.only(top: 50),
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-
-                    SizedBox(
-                        child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xfffecb02)),
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(100)),
-                    )),
-                    SizedBox(
-                        child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xfffecb02)),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(200)),
-                    )),
-                    SizedBox(
-                        child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xfffecb02)),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(200)),
-                    )),
-                    SizedBox(
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xfffecb02)),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100)),
-                      ),
+              Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 70,
+                    margin: const EdgeInsets.only(top: 50),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        SizedBox(
+                            child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xfffecb02)),
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(100)),
+                        )),
+                        SizedBox(
+                            child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xfffecb02)),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(200)),
+                        )),
+                        SizedBox(
+                            child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xfffecb02)),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(200)),
+                        )),
+                        SizedBox(
+                          child: Container(
+                            height: 70,
+                            width: 70,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xfffecb02)),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100)),
+                          ),
+                        ),
+                        SizedBox(
+                            child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xfffecb02)),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(100)),
+                        )),
+                        SizedBox(
+                            child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xfffecb02)),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(200)),
+                        )),
+                        SizedBox(
+                            child: Container(
+                          height: 70,
+                          width: 70,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xfffecb02)),
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(200)),
+                        )),
+                        SizedBox(
+                          child: Container(
+                            height: 70,
+                            width: 70,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xfffecb02)),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100)),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                        child: Container(
-                      height: 50,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xfffecb02)),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(100)),
-                    )),
-                    SizedBox(
-                        child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xfffecb02)),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(200)),
-                    )),
-                    SizedBox(
-                        child: Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xfffecb02)),
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(200)),
-                    )),
-                    SizedBox(
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xfffecb02)),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100)),
-                      ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 180,
+                                width: 150,
+                                child: Container(
+                                  margin: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white),
+                                  child: const Center(
+                                    child: Text(
+                                      'Chọn Giống',
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 180,
+                                width: 150,
+                                child: Container(
+                                  margin: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white),
+                                  child: const Center(
+                                    child: Text(
+                                      'Thông tin\nphân bón',
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 180,
+                              width: 150,
+                              child: Container(
+                                margin: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white),
+                                child: const Center(
+                                  child: Text(
+                                    'Thời tiết',
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 180,
+                              width: 150,
+                              child: Container(
+                                margin: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              // Row(
-              //   children: [
-              //
-              //
-              //
-              //   ],
-              // ),
-              // Row(children: [
-              //   Align(
-              //     child: Expanded(
-              //       child: Align(
-              //         alignment: Alignment.center,
-              //         child: Container(
-              //           color: Colors.red,
-              //           height: 150,
-              //           width: 100,
-              //         ),
-              //       ),
-              //     ),
-              //
-              //       child: Expanded(
-              //       child: Align(
-              //         alignment: Alignment.center,
-              //         child: Container(
-              //           color: Colors.blue,
-              //           height: 150,
-              //           width: 100,
-              //         ),
-              //       ),
-              //     ),
-              //   )
-              // ]),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Align(
-              //         alignment: Alignment.center,
-              //         child: Container(
-              //           color: Colors.red,
-              //           height: 150,
-              //           width: 100,
-              //         ),
-              //       ),
-              //     ),
-              //     SizedBox(width: 5),
-              //     Expanded(
-              //       child: Align(
-              //         alignment: Alignment.center,
-              //         child: Container(
-              //           color: Colors.blue,
-              //           height: 150,
-              //           width: 100,
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Container(
-              //         color: Colors.black,
-              //         height: 100,
-              //         width: 50,
-              //       ),
-              //     ),
-              //     Expanded(
-              //       child: Container(
-              //         color: Colors.white,
-              //         height: 100,
-              //         width: 50,
-              //       ),
-              //     ),
-              //   ],
-              // )
             ],
           ),
+
         ),
       ),
     );
   }
 }
+//
+

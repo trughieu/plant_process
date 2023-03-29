@@ -6,10 +6,23 @@ class HomePage extends StatelessWidget {
 
   static String routeName = "/homepage";
 
-
-
   @override
   Widget build(BuildContext context) {
-    return Body();
+    return Column(
+      children: [
+        Body(),
+        footerScreen(context)
+      ],
+    );
+
+  }
+
+//
+  Widget footerScreen(BuildContext context) {
+    return Container(
+      // width: 1,
+      // alignment: Alignment.bottomLeft,
+      // child: Image.asset("asset/images/tree.png"),
+    );
   }
 }
