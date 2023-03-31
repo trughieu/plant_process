@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plant_process/HomePage/components/plants.dart';
+import 'package:plant_process/tip_plant/components/plants.dart';
 import 'package:plant_process/HomePage/homepage.dart';
 
 void main() {

@@ -8,19 +8,28 @@ class Plant extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFFC1FD2D),
-                Color(0xFFFFFFFF),
-              ],
-            ),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFC1FD2D),
+              Color(0xFFFFFFFF),
+            ],
           ),
-          child: Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
+        ),
+        child: Container(
+          padding: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.all(20),
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                alignment: Alignment.bottomLeft,
+                child: Image.asset("asset/images/farmer.png"),
+              ),
+              Column(
                 children: [
                   Row(
                     children: [
@@ -54,7 +63,7 @@ class Plant extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20),
                         height: 50,
                         child: const Center(
                           child: Text(
@@ -66,15 +75,10 @@ class Plant extends StatelessWidget {
                           ),
                         ),
                       ),
-
-                      //     child: Text(
-                      //   "Cây ngô",
-                      //   style: TextStyle(fontSize: 12),
-                      // ))
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.only(top: 20),
                     child: const Text(
                       "Ngô (Zea mays L.) là cây nông nghiệp một lá mầm thuộc chi Zea, họ hòa thảo (Poaceae hay còn gọi là Gramineae)",
                       style: TextStyle(
@@ -85,28 +89,41 @@ class Plant extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding:  EdgeInsets.only(top: 20),
                     height: 100,
-                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.only(top: 20),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white
+                        border: Border.all(color: Color(0xfffecb02)),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: Colors.white),
+                    child: const Center(
+                      child: Text(
+                        "Theo Nhiệm Vụ",
+                        style:
+                            TextStyle(color: Color(0xff116000), fontSize: 30),
+                      ),
                     ),
-
                   ),
                   Container(
-                    padding:  EdgeInsets.only(top: 20),
+                    margin: EdgeInsets.only(top: 20),
                     height: 100,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
+                        border: Border.all(color: Color(0xfffecb02)),
                         borderRadius: BorderRadius.all(Radius.circular(15)),
-                        color: Colors.black
+                        color: Colors.white),
+                    child: const Center(
+                      child: Text(
+                        "Theo Giai Đoạn",
+                        style:
+                            TextStyle(color: Color(0xff116000), fontSize: 30),
+                      ),
                     ),
-
                   ),
                 ],
-              )),
-
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
