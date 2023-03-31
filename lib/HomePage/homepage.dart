@@ -28,7 +28,20 @@ class HomePage extends StatelessWidget {
           children: [
             footerScreen(context),
             Column(
-              children: [Info(), Body(), Menubottom(context)],
+              children: [
+                const Info(),
+                const Body(),
+                const SizedBox(
+                  height: 157,
+                ),
+                // Align(
+                //   alignment: Alignment.bottomCenter,
+                //   child: Column(
+                //     children: [Menubottom(context)],
+                //   ),
+                // ),
+                Menubottom(context)
+              ],
             ),
           ],
         ),
@@ -48,7 +61,9 @@ class HomePage extends StatelessWidget {
 
   Widget Menubottom(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      height: 80,
+      width: MediaQuery.of(context).size.width,
+      decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15), topRight: Radius.circular(15)),
           gradient: LinearGradient(
@@ -57,8 +72,79 @@ class HomePage extends StatelessWidget {
             colors: [Color(0xff91CD00), Color(0xff005200)],
           )),
       child: Row(
-        children: [Container()],
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(top: 10),
+              height: 50,
+              child: const Text(
+                "CÂY TRỒNG",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child:  FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+              child: const Icon(Icons.add),
+            ),
+          ),
+
+          // SizedBox(
+          //     width: 100,
+          //     height: 70,
+          //     child: Expanded(
+          //       child: FloatingActionButton(
+          //         onPressed: () {},
+          //         child: const Icon(Icons.add),
+          //         foregroundColor: Colors.black,
+          //         backgroundColor: Colors.white,
+          //       ),
+          //     )),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(top: 10),
+              height: 50,
+              child: const Text(
+                "LỊCH",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+
+          // Container()
+        ],
       ),
     );
+
+    //   Container(
+    //   height: 100.0,
+    //   width: MediaQuery.of(context).size.width,
+    //   alignment: Alignment.bottomCenter,
+    //   decoration: const BoxDecoration(
+    //       borderRadius: BorderRadius.only(
+    //           topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+    //       gradient: LinearGradient(
+    //         begin: Alignment.topCenter,
+    //         end: Alignment.bottomCenter,
+    //         colors: [Color(0xff91CD00), Color(0xff005200)],
+    //       )),
+    //   child: Row(
+    //     children: [Container()],
+    //   ),
+    // );
   }
 }

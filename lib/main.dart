@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plant_process/HomePage/components/plants.dart';
 import 'package:plant_process/HomePage/homepage.dart';
 
 void main() {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: Plant(),
     );
   }
 }
