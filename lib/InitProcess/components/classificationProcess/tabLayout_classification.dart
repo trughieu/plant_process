@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'
+import 'package:flutter/material.dart';
 
 class TabLayoutClassification extends StatefulWidget {
   const TabLayoutClassification({super.key});
@@ -38,7 +38,6 @@ class TabLayoutClassificationState extends State<TabLayoutClassification> with T
       children: [
         TabBar(
           controller: _tabController,
-
           labelColor: Colors.black,
           unselectedLabelColor: Colors.black,
           labelStyle: const TextStyle(fontWeight: FontWeight.bold),

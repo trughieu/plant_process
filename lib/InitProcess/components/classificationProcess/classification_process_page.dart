@@ -9,7 +9,6 @@ class ClassificationProcesssPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         leading: IconButton(
           color: Colors.white,
           icon: Icon(Icons.arrow_back_ios),

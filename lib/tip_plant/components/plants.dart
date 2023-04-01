@@ -9,6 +9,17 @@ class Plant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          color: Colors.white,
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: const Color(0xff91CD00),
+        centerTitle: true,
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -21,7 +32,6 @@ class Plant extends StatelessWidget {
           ),
         ),
         child: Container(
-          padding: EdgeInsets.only(top: 20),
           margin: EdgeInsets.all(20),
           child: Stack(
             children: [
