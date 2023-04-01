@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:plant_process/tip_plant/components/follow_mission.dart';
+import 'package:plant_process/tip_plant/components/select_plant.dart';
 
 class Plant extends StatelessWidget {
   const Plant({Key? key}) : super(key: key);
@@ -55,6 +57,7 @@ class Plant extends StatelessWidget {
                                   height: 100,
                                   child: Container(
                                     color: Colors.white,
+                                    child: Image.asset("asset/images/corn.png"),
                                   ),
                                 ),
                               ),
@@ -95,11 +98,16 @@ class Plant extends StatelessWidget {
                         border: Border.all(color: Color(0xfffecb02)),
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Colors.white),
-                    child: const Center(
-                      child: Text(
-                        "Theo Nhiệm Vụ",
-                        style:
-                            TextStyle(color: Color(0xff116000), fontSize: 30),
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.pushNamed(context, Follow_mission.routeName);
+                      },
+                      child: const Center(
+                        child: Text(
+                          "Theo Nhiệm Vụ",
+                          style: TextStyle(
+                              color: Color(0xff116000), fontSize: 30),
+                        ),
                       ),
                     ),
                   ),

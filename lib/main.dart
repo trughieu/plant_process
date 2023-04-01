@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:plant_process/tip_plant/components/plants.dart';
-import 'package:plant_process/HomePage/homepage.dart';
+import 'package:plant_process/routes.dart';
+import 'InitProcess/components/classificationProcess/classification_process_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: routes,
       title: 'Flutter Demo',
       theme: ThemeData(
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: Plant(),
+      home: ClassificationProcesssPage(),
     );
   }
 }

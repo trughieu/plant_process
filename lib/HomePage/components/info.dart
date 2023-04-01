@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../tip_plant/components/plants.dart';
 
 class Info extends StatefulWidget {
   const Info({Key? key}) : super(key: key);
@@ -25,6 +26,11 @@ class _InfoState extends State<Info> {
                 border: Border.all(color: const Color(0xfffecb02)),
                 color: Colors.red,
                 borderRadius: BorderRadius.circular(100)),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Plant.routeName);
+              },
+            ),
           )),
           SizedBox(
               child: Container(

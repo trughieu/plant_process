@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plant_process/HomePage/components/body.dart';
 import 'package:plant_process/HomePage/components/info.dart';
+import 'package:plant_process/tip_plant/components/select_plant.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -90,8 +91,10 @@ class HomePage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
-            child:  FloatingActionButton(
-              onPressed: () {},
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Select_plant.routeName);
+              },
               backgroundColor: Colors.white,
               foregroundColor: Colors.black,
               child: const Icon(Icons.add),
