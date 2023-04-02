@@ -32,16 +32,20 @@ class HomePage extends StatelessWidget {
               children: [
                 const Info(),
                 const Body(),
-                const SizedBox(
-                  height: 157,
-                ),
+
                 // Align(
                 //   alignment: Alignment.bottomCenter,
                 //   child: Column(
                 //     children: [Menubottom(context)],
                 //   ),
                 // ),
-                Menubottom(context)
+                Container(child:
+                  Row
+                    (
+                    children: [
+                      Menubottom(context)
+                    ],
+                  ),)
               ],
             ),
           ],
