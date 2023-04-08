@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plant_process/HomePage/homepage.dart';
 import 'package:plant_process/routes.dart';
+import 'package:plant_process/tip_plant/components/select_plant.dart';
 import 'InitProcess/components/classificationProcess/classification_process_page.dart';
 
 void main() {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: Select_plant(),
     );
   }
 }
