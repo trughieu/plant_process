@@ -14,15 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: routes,
       title: 'Flutter Demo',
       theme: ThemeData(
-
-
-
         primarySwatch: Colors.blue,
       ),
-      home: Select_plant(),
+      home: HomePage(),
     );
   }
 }

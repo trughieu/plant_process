@@ -27,27 +27,17 @@ class HomePage extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            footerScreen(context),
-            Column(
-              children: [
-                const Info(),
-                const Body(),
 
-                // Align(
-                //   alignment: Alignment.bottomCenter,
-                //   child: Column(
-                //     children: [Menubottom(context)],
-                //   ),
-                // ),
-                Container(child:
-                  Row
-                    (
-                    children: [
-                      Menubottom(context)
-                    ],
-                  ),)
-              ],
+            Container(
+              child: footerScreen(context),
             ),
+            Column(
+              children: const [Info(), Body()],
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Menu_bottom(context),
+            )
           ],
         ),
       ),
@@ -64,7 +54,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget Menubottom(BuildContext context) {
+  Widget Menu_bottom(BuildContext context) {
     return Container(
       height: 80,
       width: MediaQuery.of(context).size.width,
