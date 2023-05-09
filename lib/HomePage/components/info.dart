@@ -1,9 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../../model/process.dart';
 import '../../model/utilities.dart';
-import '../../tip_plant/components/plants.dart';
+import 'package:bson/bson.dart';
 
 class Info extends StatefulWidget {
   const Info({Key? key}) : super(key: key);
@@ -14,13 +14,54 @@ class Info extends StatefulWidget {
 
 class _InfoState extends State<Info> {
   String uri = Utilities.url;
-  List<Process> process=[];
-  void getProcess() async{
-    final response=await http.get(Uri.parse('$uri/api/process'));
-    if(response.statusCode==200){
-      print(response.body);
+  List<Process> process = [];
 
+  void getProcess() async {
+    final response = await http.get(Uri.parse('$uri/api/process'));
+    if (response.statusCode == 200) {
+      print(response.body);
+      final body = jsonDecode(response.body);
+      var processes = body['process'];
+      // print(processes['id_plant']);
+      for (var e in processes) {
+        print(e['id_plant']);
+      }
+
+      // collection plant
+      final plantResponse = await http.get(Uri.parse('$uri/api/plant'));
+      if (plantResponse.statusCode == 200) {
+        final plantBody = jsonDecode(plantResponse.body);
+        var plants = plantBody['plant'];
+        for (var e in plants) {
+          print(e['_id']);
+        }
+        //Loop
+        for (var pro in processes) {
+          var p = Process.fromJson(pro);
+          // find the img plant for this process
+          var plant = plants.firstWhere((pl) => pl['_id'] == pro['id_plant'],
+              orElse: () => null);
+          if (plant != null) {
+            // Build the complete URL to the image
+            var imgUri = Uri.parse(uri).resolve(plant['img_av']).toString();
+            print("img" + imgUri);
+            // Load the image and store it in the process object
+            p.img = Image.network(imgUri);
+          }
+          setState(() {
+            // add vao list Process
+            process.add(p);
+          });
+        }
+      }
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getProcess();
   }
 
   @override
@@ -37,11 +78,18 @@ class _InfoState extends State<Info> {
               height: 150,
               child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
+                  itemCount: process.length,
                   itemBuilder: (context, index) {
-                    return CategoriesItem(category: categories[index]);
+                    return Row(
+                      children: [
+                        ProcessItem(process: process[index]),
+                        SizedBox(
+                          width: 10,
+                        )
+                      ],
+                    );
                   }),
-            )
+            ),
           ],
         ),
       ),
@@ -49,22 +97,24 @@ class _InfoState extends State<Info> {
   }
 }
 
-class CategoriesItem extends StatelessWidget {
-  Categories category;
+class ProcessItem extends StatelessWidget {
+  Process process;
 
-  CategoriesItem({required this.category});
+  ProcessItem({required this.process});
 
   // const CategoriesItem({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    print(category.toString());
+    print(process.toString());
     return Container(
-        width: 150,
-        height: 150,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.yellow, width: 3)),
+        width: 80,
+        height: 80,
         padding: const EdgeInsets.all(5),
-        child:
-            category.image == null ? CircularProgressIndicator() : category.img!
+        child: process.img == null ? CircularProgressIndicator() : process.img!
         // Image.network('http://172.16.32.55:8000/${category.image}'),
         );
   }

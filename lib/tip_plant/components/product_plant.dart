@@ -33,7 +33,6 @@ class _Product_plantState extends State<Product_plant> {
         setState(() {
           plants.add(Plants_model.fromJson(p as Map<String, dynamic>));
         });
-
         for (int i = 0; i < plants.length; i++) {
           plants[i].img = Image.network('$uri/${plants[i].img_av}');
         }
