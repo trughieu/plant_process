@@ -27,7 +27,6 @@ class HomePage extends StatelessWidget {
         ),
         child: Stack(
           children: [
-
             Container(
               child: footerScreen(context),
             ),
@@ -94,18 +93,6 @@ class HomePage extends StatelessWidget {
               child: const Icon(Icons.add),
             ),
           ),
-
-          // SizedBox(
-          //     width: 100,
-          //     height: 70,
-          //     child: Expanded(
-          //       child: FloatingActionButton(
-          //         onPressed: () {},
-          //         child: const Icon(Icons.add),
-          //         foregroundColor: Colors.black,
-          //         backgroundColor: Colors.white,
-          //       ),
-          //     )),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(top: 10),
@@ -126,22 +113,5 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
-
-    //   Container(
-    //   height: 100.0,
-    //   width: MediaQuery.of(context).size.width,
-    //   alignment: Alignment.bottomCenter,
-    //   decoration: const BoxDecoration(
-    //       borderRadius: BorderRadius.only(
-    //           topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-    //       gradient: LinearGradient(
-    //         begin: Alignment.topCenter,
-    //         end: Alignment.bottomCenter,
-    //         colors: [Color(0xff91CD00), Color(0xff005200)],
-    //       )),
-    //   child: Row(
-    //     children: [Container()],
-    //   ),
-    // );
   }
 }

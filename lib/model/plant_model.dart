@@ -1,74 +1,27 @@
+import 'package:flutter/material.dart';
+
 class Plants_model {
-  int id;
-  String title;
-  String image;
+  String? originate;
+  String name;
+  String img_av;
+  String? process;
+  Image? img;
+  String id;
 
-  Plants_model({required this.id, required this.title, required this.image});
+  Plants_model(
+      {required this.id,
+      required this.img_av,
+      required this.name,
+      this.process,
+      this.originate});
 
-  static List<Plants_model> init() {
-    List<Plants_model> data = [
-      Plants_model(
-        id: 1,
-        title: "Ngô",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 2,
-        title: "Ngô",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 3,
-        title: "Tea",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 4,
-        title: "Ngô",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 5,
-        title: "Ngô",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 6,
-        title: "food",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 1,
-        title: "Ngô",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 2,
-        title: "Ngô",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 3,
-        title: "Tea",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 4,
-        title: "Ngô",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 5,
-        title: "Ngô",
-        image: "asset/images/corn.png",
-      ),
-      Plants_model(
-        id: 6,
-        title: "Ngô",
-        image: "asset/images/corn.png",
-      ),
-    ];
-
-    return data;
+  factory Plants_model.fromJson(Map<String, dynamic> item) {
+    return Plants_model(
+      id: item['_id'],
+      name: item['name'],
+      img_av: item['img_av'],
+      originate: item['originate'],
+      process: item['process'],
+    );
   }
 }

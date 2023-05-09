@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../../model/process.dart';
+import '../../model/utilities.dart';
 import '../../tip_plant/components/plants.dart';
 
 class Info extends StatefulWidget {
@@ -9,117 +13,59 @@ class Info extends StatefulWidget {
 }
 
 class _InfoState extends State<Info> {
+  String uri = Utilities.url;
+  List<Process> process=[];
+  void getProcess() async{
+    final response=await http.get(Uri.parse('$uri/api/process'));
+    if(response.statusCode==200){
+      print(response.body);
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 70,
-      margin: const EdgeInsets.only(top: 50),
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          SizedBox(
-              child: Container(
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xfffecb02)),
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(100)),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, Plant.routeName);
-              },
-            ),
-          )),
-          SizedBox(
-              child: Container(
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xfffecb02)),
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(200)),
-          )),
-          SizedBox(
-              child: Container(
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xfffecb02)),
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(200)),
-          )),
-          SizedBox(
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xfffecb02)),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100)),
-            ),
-          ),
-          SizedBox(
-              child: Container(
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xfffecb02)),
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100)),
-          )),
-          SizedBox(
-              child: Container(
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xfffecb02)),
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(200)),
-          )),
-          SizedBox(
-              child: Container(
-            height: 70,
-            width: 70,
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xfffecb02)),
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(200)),
-          )),
-          SizedBox(
-            child: Container(
-              height: 70,
-              width: 70,
-              decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xfffecb02)),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100)),
-            ),
-          ),
-        ],
+    // final categories = Categories.init();
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 150,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    return CategoriesItem(category: categories[index]);
+                  }),
+            )
+          ],
+        ),
       ),
     );
+  }
+}
 
-    // FutureBuilder<List>MyData <>(
-    // future: fetchData(),
-    // builder: (context, snapshot) {
-    // if (snapshot.hasData) {
-    // return ListView.builder(
-    // itemCount: snapshot.data.length,
-    // itemBuilder: (context, index) {
-    // final item = snapshot.data[index];
-    // return ListTile(
-    // title: Text(item.title),
-    // subtitle: Text(item.subtitle),
-    // );
-    // },
-    // );
-    // } else if (snapshot.hasError) {
-    // return Text(&apos;${snapshot.error}&apos;);
-    // }
-    // return CircularProgressIndicator();
-    // },
-    // )
+class CategoriesItem extends StatelessWidget {
+  Categories category;
+
+  CategoriesItem({required this.category});
+
+  // const CategoriesItem({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print(category.toString());
+    return Container(
+        width: 150,
+        height: 150,
+        padding: const EdgeInsets.all(5),
+        child:
+            category.image == null ? CircularProgressIndicator() : category.img!
+        // Image.network('http://172.16.32.55:8000/${category.image}'),
+        );
   }
 }
