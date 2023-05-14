@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:plant_process/InitProcess/components/classificationProcess/classification_process_page.dart';
 
 import '../../model/plant_model.dart';
 import '../../model/utilities.dart';
@@ -94,8 +95,11 @@ class _Product_plantState extends State<Product_plant> {
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
-              if (selectedProductId != null) {}
+              if (selectedProductId != null) {
+                Navigator.pushNamed(context, ClassificationProcesssPage.routeName);
+              }
               print(selectedProductId);
+
               // handle button click event
             },
             child: const Text('Next'),

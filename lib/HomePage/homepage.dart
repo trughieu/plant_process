@@ -1,17 +1,33 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:plant_process/HomePage/components/body.dart';
 import 'package:plant_process/HomePage/components/info.dart';
 import 'package:plant_process/tip_plant/components/select_plant.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+// class HomePage extends StatelessWidget {
+//   HomePage({Key? key}) : super(key: key);
+//
+//
+//
+//
 
+class HomePage extends StatefulWidget {
+   HomePage({Key? key}) : super(key: key);
   static String routeName = "/homepage";
   var selectIndex = 0;
   var flag = true;
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+
+
+class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       // body: SafeArea(
       body: Container(
@@ -71,7 +87,7 @@ class HomePage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.only(top: 10),
               height: 50,
-              child: const Text(
+              child:  Text(
                 "CÂY TRỒNG",
                 textAlign: TextAlign.center,
                 style: TextStyle(

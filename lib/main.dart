@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:plant_process/HomePage/homepage.dart';
+import 'package:plant_process/model/plant_provider.dart';
 import 'package:plant_process/routes.dart';
-import 'InitProcess/components/classificationProcess/classification_process_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => PlantProvider(),
+    )
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

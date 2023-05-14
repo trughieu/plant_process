@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:plant_process/model/plant_provider.dart';
+import 'package:plant_process/tip_plant/components/plants.dart';
 import '../../model/process.dart';
 import '../../model/utilities.dart';
 import 'package:bson/bson.dart';
+import 'package:provider/provider.dart';
 
 class Info extends StatefulWidget {
   const Info({Key? key}) : super(key: key);
@@ -41,12 +44,22 @@ class _InfoState extends State<Info> {
           // find the img plant for this process
           var plant = plants.firstWhere((pl) => pl['_id'] == pro['id_plant'],
               orElse: () => null);
+
           if (plant != null) {
+            print("plant ne$plant");
             // Build the complete URL to the image
             var imgUri = Uri.parse(uri).resolve(plant['img_av']).toString();
+            var name = plant['name'].toString();
+            var des = plant['description'].toString();
             print("img" + imgUri);
             // Load the image and store it in the process object
-            p.img = Image.network(imgUri);
+            p.image = imgUri.toString();
+            p.name = name;
+            p.description = des;
+
+            print("ađa" + name);
+            print("des" + des);
+
           }
           setState(() {
             // add vao list Process
@@ -67,6 +80,7 @@ class _InfoState extends State<Info> {
   @override
   Widget build(BuildContext context) {
     // final categories = Categories.init();
+
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: SizedBox(
@@ -100,22 +114,46 @@ class _InfoState extends State<Info> {
 class ProcessItem extends StatelessWidget {
   Process process;
 
-  ProcessItem({required this.process});
+  ProcessItem({super.key, required this.process});
 
   // const CategoriesItem({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print(process.toString());
-    return Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.yellow, width: 3)),
-        width: 80,
-        height: 80,
-        padding: const EdgeInsets.all(5),
-        child: process.img == null ? CircularProgressIndicator() : process.img!
-        // Image.network('http://172.16.32.55:8000/${category.image}'),
+    print(process.img);
+    return GestureDetector(
+      onTap: () {
+        if (process.id_plant != null) {
+          Provider.of<PlantProvider>(context, listen: false)
+              .setId(process.id_plant!);
+          print(process.id_plant);
+          print("des${process.description}");
+          print("asasa${process.img.toString()}");
+        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Plant(
+                name: process.name.toString(), img: process.image.toString(),des: process.description.toString(),),
+          ),
         );
+      },
+      child: Row(
+        children: [
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.yellow, width: 3)),
+              width: 80,
+              height: 80,
+              padding: const EdgeInsets.all(5),
+              child: Image(
+                image: NetworkImage(process.image.toString()),
+              )
+              // Image.network('http://172.16.32.55:8000/${category.image}'),
+              )
+        ],
+      ),
+    );
   }
 }
