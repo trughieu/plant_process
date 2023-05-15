@@ -89,6 +89,7 @@ class _Product_plantState extends State<Product_plant> {
                       isSelected: index == selectedIndex,
                       onTap: () {
                         selectItem(index);
+                        print(plants[index].id);
                       });
                 }),
           ),
