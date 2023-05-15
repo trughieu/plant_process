@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class Body extends StatefulWidget {
@@ -15,56 +16,99 @@ class _BodyState extends State<Body> {
   bool _isLoading = false;
   final String apiKey = 'be278ac7971af44c5bb9adb744d60fd3';
 
-  Future<void> _getWeatherData() async {
-    setState(() {
-      _isLoading = true;
-    });
+  Future<Map<String, dynamic>> getWeatherData(
+      String apiKey, double lat, double lon) async {
+    try {
+      final response = await http.get(Uri.parse(
+          'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey'));
 
-    final response = await http.get(Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?q=Hanoi,vn&appid=$apiKey'));
-
-    setState(() {
-      _isLoading = false;
       if (response.statusCode == 200) {
-        print(response.body);
-        final weatherJson = json.decode(response.body);
-        _weatherData =
-            '${weatherJson['weather'][0]['main']}, ${weatherJson['weather'][0]['description']}';
+        final weatherData = jsonDecode(response.body);
+        return weatherData;
       } else {
-        print(response.statusCode);
-
-        _weatherData = 'Error: ${response.statusCode}';
+        throw Exception('Failed to load weather data');
       }
-    });
+    } catch (e) {
+      throw Exception('Failed to load weather data');
+    }
   }
-
+  Future<void> _checkLocationPermission() async {
+    final permissionStatus = await Geolocator.checkPermission();
+    if (permissionStatus == LocationPermission.denied) {
+      await Geolocator.requestPermission();
+    }
+  }
   @override
   void initState() {
     super.initState();
-    _getWeatherData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Container(
-      height: 300,
-      decoration: BoxDecoration(
-        color: Color(0x30FFFFFF),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Center(
-        child: _isLoading
-            ? CircularProgressIndicator()
-            : Text(
-                _weatherData,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-      ),
-    ));
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 200,
+      child:
+      // FutureBuilder(
+      //     future: _checkLocationPermission().then((_) => Geolocator.getCurrentPosition(
+      //       desiredAccuracy: LocationAccuracy.high,
+      //     )),
+      //     builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
+      //       if (snapshot.hasData) {
+      //         Position position = snapshot.data!;
+      //         double latitude = 10.8230989;
+      //         double longitude = 106.6296638;
+      //         print(latitude);
+      //         print(longitude);
+      //
+      //         // Truyền giá trị latitude và longitude vào hàm getWeatherData
+      //         return
+    FutureBuilder<Map<String, dynamic>>(
+                  future: getWeatherData(apiKey, 10.8230989, 106.6296638),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final weatherData = snapshot.data!;
+                      final temperature = weatherData['main']['temp'];
+                      final weatherDescription =
+                          weatherData['weather'][0]['description'];
+                      final windSpeed = weatherData['wind']['speed'];
+                      final cloudiness = weatherData['clouds']['all'];
+
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${(temperature - 273.15).toStringAsFixed(1)}°C',
+                            style: TextStyle(fontSize: 24),
+                          ),
+                          Text(
+                            weatherDescription,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          Text(
+                            'Gió: $windSpeed m/s',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          Text(
+                            'Mây: $cloudiness%',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  })
+            // } else {
+            //   return Center(
+            //     child: CircularProgressIndicator(),
+            //   );
+            // }
+          // }),
+    );
   }
 }
-//
