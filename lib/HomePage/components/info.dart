@@ -58,7 +58,7 @@ class _InfoState extends State<Info> {
             p.description = des;
 
             print("ađa" + name);
-            print("des" + des);
+            print("ađa" + des);
 
           }
           setState(() {

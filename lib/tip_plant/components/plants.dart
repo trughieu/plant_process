@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plant_process/HomePage/components/mission.dart';
 import 'package:plant_process/tip_plant/components/follow_mission.dart';
 import 'package:plant_process/tip_plant/components/mission/gieotrong.dart';
 import 'package:plant_process/tip_plant/components/select_plant.dart';
@@ -129,7 +130,13 @@ class _PlantState extends State<Plant> {
                         color: Colors.white),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, CreateProcessPage.routeName);
+                        // Navigator.pushNamed(context, CreateProcessPage.routeName);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MissionPlant(
+                                    image: widget.img, name: widget.name)));
+
                         PlantProvider myProvider =
                             Provider.of<PlantProvider>(context, listen: false);
                         print(myProvider.id);
