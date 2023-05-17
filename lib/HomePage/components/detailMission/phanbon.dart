@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:plant_process/HomePage/components/body.dart';
 import 'package:plant_process/model/mission.dart';
 import 'package:plant_process/model/phanbon.dart';
 import 'package:plant_process/model/plant_provider.dart';
@@ -48,7 +47,9 @@ class _PhanBonDetailState extends State<PhanBonDetail> {
               img_PB: '',
               huongDan: huongDan,
             );
-            danhSachPhanBon.add(phanBonObj);
+            setState(() {
+              danhSachPhanBon.add(phanBonObj);
+            });
           }
           break;
         }
@@ -91,33 +92,78 @@ class _PhanBonDetailState extends State<PhanBonDetail> {
                 ],
               ),
             ),
-            child: Column(
-              children: [
-                Container(
-                    margin: EdgeInsets.only(top: 20),
-                    width: MediaQuery.of(context).size.width,
-                    height: 100,
-                    child: SizedBox(
-                      child: widget.mission.img,
-                    )),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: danhSachPhanBon.length,
-                    itemBuilder: (context, index) {
-                      var phanBon = danhSachPhanBon[index];
-                      return ListTile(
-                        title: Text(phanBon.tenLoaiPhan),
-                        subtitle: Text(phanBon.moTa),
-                        onTap: () {
-                          // Xử lý sự kiện khi người dùng chọn một đối tượng PhanBon
-                          print('Đã chọn đối tượng: ${phanBon.tenLoaiPhan}');
-                          print('Hướng dẫn: ${phanBon.huongDan}');
-                        },
-                      );
-                    },
-                  ),
+            child: Column(children: [
+              Container(
+                  margin: EdgeInsets.only(top: 20),
+                  width: MediaQuery.of(context).size.width,
+                  height: 100,
+                  child: SizedBox(
+                    child: widget.mission.img,
+                  )),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: danhSachPhanBon.length,
+                  itemBuilder: (context, index) {
+                    var phanBon = danhSachPhanBon[index];
+                    return ListTile(
+                      contentPadding: EdgeInsets.all(0),
+                      title: RichText(
+                        text: TextSpan(
+                          style: DefaultTextStyle.of(context).style,
+                          children: [
+                            TextSpan(
+                              text: phanBon.tenLoaiPhan,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const TextSpan(text: '  '),
+                          ],
+                        ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 10),
+                          Text(
+                            phanBon.moTa,
+                            style: TextStyle(fontSize: 16,
+                            color: Colors.black),
+                          ),
+                          SizedBox(height: 5),
+                          RichText(
+                            text: TextSpan(
+                              text: 'Hướng dẫn: ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: phanBon.huongDan,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      onTap: () {
+                        // Xử lý sự kiện khi người dùng chọn một đối tượng PhanBon
+                        print('Đã chọn đối tượng: ${phanBon.tenLoaiPhan}');
+                        print('Hướng dẫn: ${phanBon.huongDan}');
+                      },
+                    );
+                  },
                 ),
-              ],
-            )));
+              ),
+            ])));
   }
 }

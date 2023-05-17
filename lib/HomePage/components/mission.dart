@@ -1,10 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:plant_process/HomePage/components/detailMission/gieotrong.dart';
+import 'package:plant_process/HomePage/components/detailMission/kythuattrong.dart';
 import 'package:plant_process/HomePage/components/detailMission/phanbon.dart';
+import 'package:plant_process/HomePage/components/detailMission/phongsaubenh.dart';
+import 'package:plant_process/HomePage/components/detailMission/thuhoach.dart';
+import 'package:plant_process/model/gieotrong.dart';
 import 'package:plant_process/model/mission.dart';
+import 'package:plant_process/model/saubenh.dart';
 import 'package:plant_process/model/utilities.dart';
 import 'package:http/http.dart' as http;
+
+import 'detailMission/thuyloi.dart';
 
 class MissionPlant extends StatefulWidget {
   final String image;
@@ -110,9 +118,39 @@ class _MissionPlantState extends State<MissionPlant> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
+                                    builder: (context) => PhanBonDetail(
+                                        mission: mission[index])));
+                          } else if (mission[index].type == 'THUY_LOI') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
                                     builder: (context) =>
-                                        PhanBonDetail(mission: mission[index])));
-                          } else {}
+                                        thuyLoi(mission: mission[index])));
+                          } else if (mission[index].type == 'GIEO_TRONG') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        gieoTrong(mission: mission[index])));
+                          } else if (mission[index].type == 'KY_THUAT') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Ktt(mission: mission[index])));
+                          } else if (mission[index].type == 'PHONG_SAU_BENH') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        phongSauBenh(mission: mission[index])));
+                          } else if (mission[index].type == 'THU_HOACH') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        thuHoach(mission: mission[index])));
+                          }
                         });
                   }),
             ))
