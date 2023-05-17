@@ -33,21 +33,20 @@ class _ThuHoachState extends State<ThuHoach> {
       for (var p in pro) {
         var idplant = p['id_plant'];
         var phanBon = p['chamSoc']['thuHoach'];
-        print("aá$phanBon");
         if (idplant == myProvider.id) {
-          if (phanBon is List) {
-            for (var pb in phanBon) {
-              var thoigianTH = pb['thoiGianTH'];
-              var baoQuan = pb['baoQuan'];
-              var noiDung = pb['noiDung'];
+              var thoigianTH = phanBon['thoiGianTH'];
+              var baoQuan = phanBon['baoQuan'];
+              var noiDung = phanBon['noiDung'];
+              print(thoigianTH);
 
+              print(baoQuan);
+              print(noiDung);
               var tuoinuoc = thuHoach(
                   baoQuan: baoQuan, noiDung: noiDung, thoigianTH: thoigianTH);
               setState(() {
                 thuhoachList.add(tuoinuoc);
               });
-            }
-          }
+
           break;
         }
       }
@@ -103,15 +102,8 @@ class _ThuHoachState extends State<ThuHoach> {
               Container(
                 margin: EdgeInsets.all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'hsuidhfùi',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
                     SizedBox(height: 16),
                     Text(
                       'thoi gian thu hoach: ${thuhoachList[0].thoigianTH}',
