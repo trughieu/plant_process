@@ -1,20 +1,136 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:plant_process/model/thuhoach.dart';
+import 'package:plant_process/model/utilities.dart';
 
 import '../../../model/mission.dart';
+import '../../../model/plant_provider.dart';
 
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
-class thuHoach extends StatefulWidget {
+class ThuHoach extends StatefulWidget {
   final Mission mission;
 
-  const thuHoach({Key? key, required this.mission}) : super(key: key);
+  const ThuHoach({Key? key, required this.mission}) : super(key: key);
 
   @override
-  State<thuHoach> createState() => _thuHoachState();
+  State<ThuHoach> createState() => _ThuHoachState();
 }
 
-class _thuHoachState extends State<thuHoach> {
+class _ThuHoachState extends State<ThuHoach> {
+  String url = Utilities.url;
+  List<thuHoach> thuhoachList = [];
+
+  void getPhanbon() async {
+    PlantProvider myProvider =
+        Provider.of<PlantProvider>(context, listen: false);
+    final response = await http.get(Uri.parse('$url/api/process'));
+    if (response.statusCode == 200) {
+      final process = jsonDecode(response.body);
+      var pro = process['process'];
+      for (var p in pro) {
+        var idplant = p['id_plant'];
+        var phanBon = p['chamSoc']['thuHoach'];
+        print("aá$phanBon");
+        if (idplant == myProvider.id) {
+          if (phanBon is List) {
+            for (var pb in phanBon) {
+              var thoigianTH = pb['thoiGianTH'];
+              var baoQuan = pb['baoQuan'];
+              var noiDung = pb['noiDung'];
+
+              var tuoinuoc = thuHoach(
+                  baoQuan: baoQuan, noiDung: noiDung, thoigianTH: thoigianTH);
+              setState(() {
+                thuhoachList.add(tuoinuoc);
+              });
+            }
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPhanbon();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.mission.title),
+        leading: IconButton(
+          color: Colors.white,
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: const Color(0xff91CD00),
+        centerTitle: true,
+      ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFC1FD2D),
+              Color(0xFFFFFFFF),
+            ],
+          ),
+        ),
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              child: SizedBox(
+                child: widget.mission.img,
+              ),
+            ),
+            if (thuhoachList.isNotEmpty)
+              Container(
+                margin: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'hsuidhfùi',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'thoi gian thu hoach: ${thuhoachList[0].thoigianTH}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      'Nội dung: ${thuhoachList[0].noiDung}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      'Bảo quản: ${thuhoachList[0].baoQuan}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }

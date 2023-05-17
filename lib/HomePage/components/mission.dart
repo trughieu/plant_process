@@ -149,7 +149,7 @@ class _MissionPlantState extends State<MissionPlant> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        thuHoach(mission: mission[index])));
+                                        ThuHoach(mission: mission[index])));
                           }
                         });
                   }),
