@@ -36,7 +36,6 @@ class _InfoState extends State<Info> {
         final plantBody = jsonDecode(plantResponse.body);
         var plants = plantBody['plant'];
         for (var e in plants) {
-          print(e['_id']);
         }
         //Loop
         for (var pro in processes) {
@@ -46,19 +45,14 @@ class _InfoState extends State<Info> {
               orElse: () => null);
 
           if (plant != null) {
-            print("plant ne$plant");
             // Build the complete URL to the image
             var imgUri = Uri.parse(uri).resolve(plant['img_av']).toString();
             var name = plant['name'].toString();
             var des = plant['description'].toString();
-            print("img" + imgUri);
             // Load the image and store it in the process object
             p.image = imgUri.toString();
             p.name = name;
             p.description = des;
-
-            print("ađa" + name);
-            print("ađa" + des);
 
           }
           setState(() {
@@ -125,9 +119,6 @@ class ProcessItem extends StatelessWidget {
         if (process.id_plant != null) {
           Provider.of<PlantProvider>(context, listen: false)
               .setId(process.id_plant!);
-          print(process.id_plant);
-          print("des${process.description}");
-          print("asasa${process.img.toString()}");
         }
         Navigator.push(
           context,
