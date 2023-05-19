@@ -17,7 +17,6 @@ class BodyState extends State<Body>{
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.all(8),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -36,14 +35,14 @@ class BodyState extends State<Body>{
           SizedBox(
             height: 40,
           ),
-          Center(
-            child: Text("KHỞI TẠO QUI TRÌNH", style: TextStyle(
-              fontFamily: 'Inter-Bold-700.ttf',
-              color: Colors.black,
-              fontWeight: FontWeight.w900,
-              fontSize: 30,
-            ),),
-          ),
+          // Center(
+          //   child: Text("Khởi tạo quy trình", style: TextStyle(
+          //     fontFamily: 'Inter-Bold-700.ttf',
+          //     color: Colors.black,
+          //     fontWeight: FontWeight.w900,
+          //     fontSize: 30,
+          //   ),),
+          // ),
 
           SizedBox(height: 30,),
           Padding(

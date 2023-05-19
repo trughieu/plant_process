@@ -1,13 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:plant_process/HomePage/components/mission.dart';
 import 'package:plant_process/tip_plant/components/follow_mission.dart';
+import 'package:plant_process/tip_plant/components/mission/gieotrong.dart';
 import 'package:plant_process/tip_plant/components/select_plant.dart';
 
-class Plant extends StatelessWidget {
-  const Plant({Key? key}) : super(key: key);
-  static String routeName = "/plants";
+import '../../model/plant_provider.dart';
+import 'package:provider/provider.dart';
+
+// class Plant extends StatelessWidget {
+
+//   static String routeName = "/plants";
+class Plant extends StatefulWidget {
+  final String name;
+  final String img;
+  final String des;
+
+  Plant({Key? key, required this.name, required this.img, required this.des})
+      : super(key: key);
 
   @override
+  State<Plant> createState() => _PlantState();
+}
+
+class _PlantState extends State<Plant> {
+  @override
   Widget build(BuildContext context) {
+    print(widget.img);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -67,7 +85,9 @@ class Plant extends StatelessWidget {
                                   height: 100,
                                   child: Container(
                                     color: Colors.white,
-                                    child: Image.asset("asset/images/corn.png"),
+                                    child: Image(
+                                      image: NetworkImage(widget.img),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -78,10 +98,10 @@ class Plant extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.only(left: 20),
                         height: 50,
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            "Cây Ngô",
-                            style: TextStyle(
+                            widget.name,
+                            style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 30,
                                 decoration: TextDecoration.none),
@@ -92,8 +112,8 @@ class Plant extends StatelessWidget {
                   ),
                   Container(
                     padding: EdgeInsets.only(top: 20),
-                    child: const Text(
-                      "Ngô (Zea mays L.) là cây nông nghiệp một lá mầm thuộc chi Zea, họ hòa thảo (Poaceae hay còn gọi là Gramineae)",
+                    child: Text(
+                      widget.des,
                       style: TextStyle(
                         color: Colors.black,
                         decoration: TextDecoration.none,
@@ -109,14 +129,23 @@ class Plant extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Colors.white),
                     child: GestureDetector(
-                      onTap: (){
-                        Navigator.pushNamed(context, Follow_mission.routeName);
+                      onTap: () {
+                        // Navigator.pushNamed(context, CreateProcessPage.routeName);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MissionPlant(
+                                    image: widget.img, name: widget.name)));
+
+                        PlantProvider myProvider =
+                            Provider.of<PlantProvider>(context, listen: false);
+                        print(myProvider.id);
                       },
                       child: const Center(
                         child: Text(
                           "Theo Nhiệm Vụ",
-                          style: TextStyle(
-                              color: Color(0xff116000), fontSize: 30),
+                          style:
+                              TextStyle(color: Color(0xff116000), fontSize: 30),
                         ),
                       ),
                     ),

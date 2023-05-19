@@ -1,17 +1,33 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:plant_process/HomePage/components/body.dart';
 import 'package:plant_process/HomePage/components/info.dart';
 import 'package:plant_process/tip_plant/components/select_plant.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+// class HomePage extends StatelessWidget {
+//   HomePage({Key? key}) : super(key: key);
+//
+//
+//
+//
 
+class HomePage extends StatefulWidget {
+   HomePage({Key? key}) : super(key: key);
   static String routeName = "/homepage";
   var selectIndex = 0;
   var flag = true;
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+
+
+class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       // body: SafeArea(
       body: Container(
@@ -27,23 +43,16 @@ class HomePage extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            footerScreen(context),
-            Column(
-              children: [
-                const Info(),
-                const Body(),
-                const SizedBox(
-                  height: 157,
-                ),
-                // Align(
-                //   alignment: Alignment.bottomCenter,
-                //   child: Column(
-                //     children: [Menubottom(context)],
-                //   ),
-                // ),
-                Menubottom(context)
-              ],
+            Container(
+              child: footerScreen(context),
             ),
+            Column(
+              children: const [Info(), Body()],
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Menu_bottom(context),
+            )
           ],
         ),
       ),
@@ -60,7 +69,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget Menubottom(BuildContext context) {
+  Widget Menu_bottom(BuildContext context) {
     return Container(
       height: 80,
       width: MediaQuery.of(context).size.width,
@@ -78,7 +87,7 @@ class HomePage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.only(top: 10),
               height: 50,
-              child: const Text(
+              child:  Text(
                 "CÂY TRỒNG",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -100,18 +109,6 @@ class HomePage extends StatelessWidget {
               child: const Icon(Icons.add),
             ),
           ),
-
-          // SizedBox(
-          //     width: 100,
-          //     height: 70,
-          //     child: Expanded(
-          //       child: FloatingActionButton(
-          //         onPressed: () {},
-          //         child: const Icon(Icons.add),
-          //         foregroundColor: Colors.black,
-          //         backgroundColor: Colors.white,
-          //       ),
-          //     )),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(top: 10),
@@ -132,22 +129,5 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
-
-    //   Container(
-    //   height: 100.0,
-    //   width: MediaQuery.of(context).size.width,
-    //   alignment: Alignment.bottomCenter,
-    //   decoration: const BoxDecoration(
-    //       borderRadius: BorderRadius.only(
-    //           topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-    //       gradient: LinearGradient(
-    //         begin: Alignment.topCenter,
-    //         end: Alignment.bottomCenter,
-    //         colors: [Color(0xff91CD00), Color(0xff005200)],
-    //       )),
-    //   child: Row(
-    //     children: [Container()],
-    //   ),
-    // );
   }
 }
