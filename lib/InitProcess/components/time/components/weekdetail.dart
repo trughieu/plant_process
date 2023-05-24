@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:plant_process/InitProcess/components/time/components/bonphan.dart';
+import 'package:plant_process/InitProcess/components/time/components/bonphanscreen.dart';
+import 'package:plant_process/InitProcess/components/time/components/gieotrongscreen.dart';
+import 'package:plant_process/InitProcess/components/time/components/thuhoachscreen.dart';
+import 'package:plant_process/InitProcess/components/time/components/thuyloiscreen.dart';
 import 'package:plant_process/model/utilities.dart';
 import 'package:http/http.dart' as http;
 import 'package:plant_process/tip_plant/components/product_plant.dart';
@@ -247,14 +250,42 @@ class _WeekDetailState extends State<WeekDetail> {
                     return ProductItem(
                         mission: mission[index],
                         onTap: () {
-                          if(mission[index].type=='BON_PHAN'){
+                          if (mission[index].type == 'THU_HOACH') {
                             Navigator.push(
-                              context,MaterialPageRoute(builder: (context)=>
-                            BonPhan(dateFrom: widget.dateFrom, dateTo: widget.dateTo, selectedWeekIndex: widget.selectedWeekIndex))
-                            );
-                          }
-                          else{
-                            Navigator.pushNamed(context, Select_plant.routeName);
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ThuHoachScreen(
+                                        dateFrom: widget.dateFrom,
+                                        dateTo: widget.dateTo,
+                                        selectedWeekIndex:
+                                            widget.selectedWeekIndex)));
+                          } else if (mission[index].type == 'BON_PHAN') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BonPhanScreen(
+                                        dateFrom: widget.dateFrom,
+                                        dateTo: widget.dateTo,
+                                        selectedWeekIndex:
+                                            widget.selectedWeekIndex)));
+                          } else if (mission[index].type == 'GIEO_TRONG') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => GieoStrongScreen(
+                                        dateFrom: widget.dateFrom,
+                                        dateTo: widget.dateTo,
+                                        selectedWeekIndex:
+                                            widget.selectedWeekIndex)));
+                          } else if (mission[index].type == 'THUY_LOI') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ThuyLoiScreen(
+                                        dateFrom: widget.dateFrom,
+                                        dateTo: widget.dateTo,
+                                        selectedWeekIndex:
+                                            widget.selectedWeekIndex)));
                           }
                         });
                   }),

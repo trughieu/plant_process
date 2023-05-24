@@ -76,7 +76,7 @@ class _gieoTrongState extends State<gieoTrong> {
         title: Text(widget.mission.title),
         leading: IconButton(
           color: Colors.white,
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -86,7 +86,14 @@ class _gieoTrongState extends State<gieoTrong> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -101,50 +108,133 @@ class _gieoTrongState extends State<gieoTrong> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Thông tin Gieo Trồng',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               if (gieoTrongList.isNotEmpty)
-                Text(
-                  'Nhiệt độ: ${gieoTrongList[0].ngoaiCanh.nhietdo}',
-                  style: TextStyle(fontSize: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Nhiệt độ:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${gieoTrongList[0].ngoaiCanh.nhietdo}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
               if (gieoTrongList.isNotEmpty)
-                Text(
-                  'Ánh sáng: ${gieoTrongList[0].ngoaiCanh.anhSang}',
-                  style: TextStyle(fontSize: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Ánh sáng:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${gieoTrongList[0].ngoaiCanh.anhSang}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
               if (gieoTrongList.isNotEmpty)
-                Text(
-                  'Nước: ${gieoTrongList[0].ngoaiCanh.nuoc}',
-                  style: TextStyle(fontSize: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Nước:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${gieoTrongList[0].ngoaiCanh.nuoc}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
               if (gieoTrongList.isNotEmpty)
-                Text(
-                  'Độ ẩm: ${gieoTrongList[0].ngoaiCanh.doAm}',
-                  style: TextStyle(fontSize: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Độ ẩm:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${gieoTrongList[0].ngoaiCanh.doAm}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
               if (gieoTrongList.isNotEmpty)
-                Text(
-                  'Chất lượng khí kháng: ${gieoTrongList[0].ngoaiCanh
-                      .chatLuongKK}',
-                  style: TextStyle(fontSize: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Chất lượng khí kháng:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${gieoTrongList[0].ngoaiCanh.chatLuongKK}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
               if (gieoTrongList.isNotEmpty)
-                Text(
-                  'Mô tả thêm: ${gieoTrongList[0].ngoaiCanh.moTaThem}',
-                  style: TextStyle(fontSize: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Mô tả thêm:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${gieoTrongList[0].ngoaiCanh.moTaThem}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               if (gieoTrongList.isNotEmpty)
-                Text(
-                  'Thời vụ: ${gieoTrongList[0].thoiVu}',
-                  style: TextStyle(fontSize: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Thời vụ:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${gieoTrongList[0].thoiVu}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
             ],
           ),
