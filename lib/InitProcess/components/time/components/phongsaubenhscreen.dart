@@ -63,10 +63,10 @@ class _SauBenhScreenState extends State<SauBenhScreen> {
           plants.any((plant) => plant['id_plant'] == myProvider.id);
       if (processExists) {
         print(processExists);
-        final res = await http.put(
-          Uri.parse('$url/api/process/$idPlant/chamSoc/tuoiNuoc'),
+        final res = await http.post(
+          Uri.parse('$url/api/process/$idPlant/chamSoc/psb'),
           headers: {'Content-Type': 'application/json'},
-          body: json.encode({'tuoiNuoc': phongSauBenh.toJson()}),
+          body: json.encode(phongSauBenh.toJson()),
         );
         if (res.statusCode == 200) {
           print(res.body);

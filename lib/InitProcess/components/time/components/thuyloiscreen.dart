@@ -176,6 +176,7 @@ class _ThuyLoiScreenState extends State<ThuyLoiScreen> {
                                   // await DatabaseHelper.instance.insertProcess(_process);
                                   uploadTuoiNuoc();
                                   Provider.of<ProgressProvider>(context, listen: false).updateProgress();
+                                  Navigator.pop(context);
                                 }
                               },
                               child: Text('Lưu'),

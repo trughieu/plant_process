@@ -23,7 +23,7 @@ class _KttState extends State<Ktt> {
   String url = Utilities.url;
   List<KyThuatTrong> kythuattrong = [];
 
-  void getPhanbon() async {
+  void getKTT() async {
     PlantProvider myProvider =
     Provider.of<PlantProvider>(context, listen: false);
 
@@ -40,7 +40,7 @@ class _KttState extends State<Ktt> {
             var moTa = pb['moTa'];
             var huongDan = pb['huongDan'];
 
-            var phanBonObj = KyThuatTrong(tenKyThuat: tenKyThuat, moTa: moTa, img_KT: '', huongDan: huongDan);
+            var phanBonObj = KyThuatTrong(tenKyThuat: tenKyThuat, moTa: moTa, img_KT: '', huongDan: huongDan, id: '');
             setState(() {
               kythuattrong.add(phanBonObj);
             });
@@ -55,7 +55,7 @@ class _KttState extends State<Ktt> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPhanbon();
+    getKTT();
   }
 
 

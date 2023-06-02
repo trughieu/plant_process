@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:plant_process/HomePage/homepage.dart';
 import 'package:plant_process/InitProcess/components/time/components/bonphanscreen.dart';
 import 'package:plant_process/InitProcess/components/time/components/gieotrongscreen.dart';
 import 'package:plant_process/InitProcess/components/time/components/kttscreen.dart';
@@ -12,12 +13,8 @@ import 'package:plant_process/InitProcess/components/time/components/thuhoachscr
 import 'package:plant_process/InitProcess/components/time/components/thuyloiscreen.dart';
 import 'package:plant_process/model/utilities.dart';
 import 'package:http/http.dart' as http;
-import 'package:plant_process/tip_plant/components/product_plant.dart';
-import 'package:plant_process/tip_plant/components/select_plant.dart';
 import '../../../../model/mission.dart';
 import '../../../../progressbar.dart';
-import '../../../../provider/progressbar.dart';
-import 'package:provider/provider.dart';
 
 class WeekDetail extends StatefulWidget {
   final DateTime dateFrom;
@@ -46,9 +43,7 @@ class _WeekDetailState extends State<WeekDetail> {
     if (response.statusCode == 200) {
       print(response.body);
       final body = jsonDecode(response.body);
-      print("body$body");
       var mis = body['mission'];
-      print("asas$mis");
       for (var p in mis) {
         setState(() {
           mission.add(Mission.fromJson(p as Map<String, dynamic>));
@@ -96,7 +91,6 @@ class _WeekDetailState extends State<WeekDetail> {
 
   @override
   Widget build(BuildContext context) {
-    ProgressProvider progressProvider = Provider.of<ProgressProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -238,7 +232,13 @@ class _WeekDetailState extends State<WeekDetail> {
                           }
                         });
                   }),
-            ))
+            )),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.pushNamed(context, HomePage.routeName);
+                },
+              child: Text('Xong'),
+            ),
           ],
         ),
       ),

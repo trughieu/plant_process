@@ -182,19 +182,6 @@ class _Product_plantState extends State<Product_plant> {
 
     if (idExists) {
       print(idExists);
-      // Nếu id đã tồn tại, thực hiện cập nhật dữ liệu
-      // final res = await http.put(
-      //   Uri.parse('$uri/api/process/$id'),
-      //   headers: {'Content-Type': 'application/json'},
-      //   body: json.encode(process.toJson()),
-      // );
-      //
-      // if (res.statusCode == 200) {
-      //   print(res.body);
-      // } else {
-      //   print(res.body);
-      //   throw Exception('Failed to update');
-      // }
       showDialog(
         context: context,
         builder: (context) => AlertDialog(

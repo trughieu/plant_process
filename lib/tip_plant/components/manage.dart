@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:plant_process/InitProcess/components/classificationProcess/classification_process_page.dart';
+import 'package:plant_process/InitProcess/components/time/components/edit/mission.dart';
+import 'package:plant_process/InitProcess/components/time/components/edit/thuhoach.dart';
 import 'package:plant_process/model/processplant.dart';
 import 'package:plant_process/tip_plant/components/select_plant.dart';
 
@@ -30,8 +32,6 @@ class _ItemListWidgetState extends State<ItemListWidget> {
       print(response.body);
       final body = jsonDecode(response.body);
       var processes = body['process'];
-
-
       // collection plant
       final plantResponse = await http.get(Uri.parse('$uri/api/plant'));
       if (plantResponse.statusCode == 200) {
@@ -64,12 +64,21 @@ class _ItemListWidgetState extends State<ItemListWidget> {
     }
   }
 
+  void deleteProcess(String id) async {
+    final response = await http.delete(Uri.parse('$uri/api/process/$id'));
+    if (response.statusCode == 200) {
+      print(response.body);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getProcess();
   }
+
+  String? selectedProcessId;
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +125,10 @@ class _ItemListWidgetState extends State<ItemListWidget> {
                         icon: Icon(Icons.edit),
                         color: Colors.red,
                         onPressed: () {
+                          selectedProcessId = item.id_plant;
+                          Provider.of<PlantProvider>(context, listen: false)
+                              .setId(selectedProcessId.toString());
+                          Navigator.pushNamed(context, editMission.routeName);
                           // Xử lý sự kiện chỉnh sửa mục
                           // Ví dụ: Navigator.push để chuyển đến màn hình chỉnh sửa
                         },
@@ -133,6 +146,9 @@ class _ItemListWidgetState extends State<ItemListWidget> {
                                 TextButton(
                                   onPressed: () {
                                     setState(() {
+                                      selectedProcessId = item.id_plant;
+                                      deleteProcess(selectedProcessId!);
+                                      process.removeAt(index);
                                     });
                                     Navigator.pop(context);
                                   },
@@ -162,7 +178,9 @@ class _ItemListWidgetState extends State<ItemListWidget> {
 
           // Xử lý sự kiện khi nhấn nút floating action button
         },
-        child: Icon(Icons.add,),
+        child: Icon(
+          Icons.add,
+        ),
       ),
     );
   }

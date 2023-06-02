@@ -7,16 +7,9 @@ import 'package:plant_process/tip_plant/components/select_plant.dart';
 
 import '../tip_plant/components/manage.dart';
 
-// class HomePage extends StatelessWidget {
-//   HomePage({Key? key}) : super(key: key);
-//
-//
-//
-//
-
 class HomePage extends StatefulWidget {
-   HomePage({Key? key}) : super(key: key);
   static String routeName = "/homepage";
+  HomePage({Key? key}) : super(key: key);
   var selectIndex = 0;
   var flag = true;
   @override
