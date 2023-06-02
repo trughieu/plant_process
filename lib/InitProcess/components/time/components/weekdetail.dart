@@ -235,7 +235,8 @@ class _WeekDetailState extends State<WeekDetail> {
             )),
             ElevatedButton(
               onPressed: () async {
-                Navigator.pushNamed(context, HomePage.routeName);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, HomePage.routeName, (Route<dynamic>route) => false);
                 },
               child: Text('Xong'),
             ),

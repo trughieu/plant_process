@@ -1,63 +1,68 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:plant_process/model/processplant.dart';
 import 'package:plant_process/model/utilities.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../model/plant_provider.dart';
 import 'package:provider/provider.dart';
+import '../../../../../model/plant_provider.dart';
 
-import '../../../../progressbar.dart';
-import '../../../../provider/progressbar.dart';
+class editThuhoach extends StatefulWidget {
+  static String routeName = '/editthuhoach';
 
-class ThuHoachScreen extends StatefulWidget {
-  final DateTime dateFrom;
-  final DateTime dateTo;
-  final int selectedWeekIndex;
-
-  ThuHoachScreen(
-      {Key? key,
-      required this.dateFrom,
-      required this.dateTo,
-      required this.selectedWeekIndex})
-      : super(key: key);
+  const editThuhoach({super.key});
 
   @override
-  State<ThuHoachScreen> createState() => _ThuHoachScreenState();
+  State<editThuhoach> createState() => _editThuhoachState();
 }
 
-int getElapsedWeeks(DateTime startDate, DateTime endDate) {
-  final daysElapsed = DateTime.now().difference(startDate).inDays;
-  return (daysElapsed / 7).floor();
-}
-
-int getRemainingWeeks(
-    DateTime startDate, DateTime endDate, int selectedWeekIndex) {
-  final weeksElapsed = getElapsedWeeks(startDate, endDate);
-  return (endDate.difference(startDate).inDays / 7).ceil() -
-      weeksElapsed -
-      selectedWeekIndex;
-}
-
-class _ThuHoachScreenState extends State<ThuHoachScreen> {
+class _editThuhoachState extends State<editThuhoach> {
   String url = Utilities.url;
   final _formKey = GlobalKey<FormState>();
   final _timeTH = TextEditingController();
   final _baoQuan = TextEditingController();
   final _noiDung = TextEditingController();
 
-
-  void uploadThuhoach() async {
+  void getPhanbon() async {
     PlantProvider myProvider =
         Provider.of<PlantProvider>(context, listen: false);
+    final response = await http.get(Uri.parse('$url/api/process'));
+    if (response.statusCode == 200) {
+      print(response.body);
+      final process = jsonDecode(response.body);
+      var pro = process['process'];
+      for (var p in pro) {
+        var idplant = p['id_plant'];
+        var phanBon = p['chamSoc']['thuHoach'];
+        if (idplant == myProvider.id) {
+          var thoigianTH = phanBon['thoiGianTH'];
+          var baoQuan = phanBon['baoQuan'];
+          var noiDung = phanBon['noiDung'];
+          setState(() {
+            _baoQuan.text = baoQuan;
+            _noiDung.text = noiDung;
+            _timeTH.text = thoigianTH;
+          });
+
+          break;
+        }
+      }
+    }
+  }
+
+
+  void updateThuhoach() async {
+    PlantProvider myProvider =
+    Provider.of<PlantProvider>(context, listen: false);
     final idPlant = myProvider.id;
     String timeTH = _timeTH.text;
     String baoQuan = _baoQuan.text;
     String noiDung = _noiDung.text;
     ThuHoach thuHoach =
-        ThuHoach(thoiGianTH: timeTH, baoQuan: baoQuan, noiDung: noiDung);
+    ThuHoach(thoiGianTH: timeTH, baoQuan: baoQuan, noiDung: noiDung);
     final response = await http.get(Uri.parse('$url/api/process/'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -81,8 +86,16 @@ class _ThuHoachScreenState extends State<ThuHoachScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPhanbon();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           color: Colors.white,
@@ -94,7 +107,7 @@ class _ThuHoachScreenState extends State<ThuHoachScreen> {
         backgroundColor: const Color(0xff91CD00),
         centerTitle: true,
         title: const Text(
-          "Khởi tạo quy trình",
+          "Thu hoạch",
           style: TextStyle(
               fontFamily: 'Inter-Medium-500.ttf',
               color: Colors.black,
@@ -120,41 +133,9 @@ class _ThuHoachScreenState extends State<ThuHoachScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      '${getRemainingWeeks(widget.dateFrom, widget.dateTo, widget.selectedWeekIndex)} tuần còn lại trước khi gieo hạt',
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w600),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
               child: Center(
                 child: Column(
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 50, right: 50),
-                      margin: const EdgeInsets.only(top: 20),
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      color: const Color(0x50FFFFFF),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Tuần ${widget.selectedWeekIndex}',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
                     SizedBox(
                       height: 50,
                     ),
@@ -165,18 +146,21 @@ class _ThuHoachScreenState extends State<ThuHoachScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             thoiGianTH(),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             baoQuan(),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             noiDung(),
                             ElevatedButton(
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  // await DatabaseHelper.instance.insertProcess(_process);
-                                  uploadThuhoach();
-                                  Provider.of<ProgressProvider>(context, listen: false).updateProgress();
+                                  updateThuhoach();
                                   Navigator.pop(context);
+                                  // await DatabaseHelper.instance.insertProcess(_process);
                                 }
                               },
                               child: Text('Lưu'),

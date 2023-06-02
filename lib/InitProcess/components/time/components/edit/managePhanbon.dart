@@ -2,50 +2,53 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:plant_process/InitProcess/components/time/components/edit/editktt.dart';
+import 'package:plant_process/InitProcess/components/time/components/edit/editphanbon.dart';
 
 import '../../../../../model/kythuattrong.dart';
 import '../../../../../model/plant_provider.dart';
+import '../../../../../model/processplant.dart';
 import '../../../../../model/utilities.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-class ManageKTT extends StatefulWidget {
-  static String routeName = '/manageKTT';
+class ManagePhanBon extends StatefulWidget {
+  static String routeName = '/managePB';
 
-  const ManageKTT({Key? key}) : super(key: key);
+  const ManagePhanBon({Key? key}) : super(key: key);
 
   @override
-  State<ManageKTT> createState() => _ManageKTTState();
+  State<ManagePhanBon> createState() => _ManagePhanBonState();
 }
 
-class _ManageKTTState extends State<ManageKTT> {
+class _ManagePhanBonState extends State<ManagePhanBon> {
   String uri = Utilities.url;
-  List<KyThuatTrong> ktt = [];
+  List<PhanBon> phanbonList = [];
 
-  void getKTT() async {
+  void getPhanbon() async {
     PlantProvider myProvider =
         Provider.of<PlantProvider>(context, listen: false);
+    final idPlant = myProvider.id;
     final response = await http.get(Uri.parse('$uri/api/process'));
     if (response.statusCode == 200) {
       final process = jsonDecode(response.body);
       var pro = process['process'];
       for (var p in pro) {
         var idplant = p['id_plant'];
-        var phanBon = p['chamSoc']['kyThuatTrong'];
+        var phanBon = p['chamSoc']['phanBon'];
         if (idplant == myProvider.id) {
           for (var pb in phanBon) {
-            var tenKyThuat = pb['tenKyThuat'];
+            var tenKyThuat = pb['tenLoaiPhan'];
             var moTa = pb['moTa'];
             var huongDan = pb['huongDan'];
             var id = pb['_id'];
-            var phanBonObj = KyThuatTrong(
-                tenKyThuat: tenKyThuat,
+            var phanBonObj = PhanBon(
+                tenLoaiPhan: tenKyThuat,
                 moTa: moTa,
-                img_KT: '',
+                imgPB: '',
                 huongDan: huongDan,
                 id: id);
             setState(() {
-              ktt.add(phanBonObj);
+              phanbonList.add(phanBonObj);
             });
           }
           break;
@@ -58,16 +61,7 @@ class _ManageKTTState extends State<ManageKTT> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getKTT();
-  }
-  void deleteKTT(String id) async {
-    PlantProvider myProvider =
-    Provider.of<PlantProvider>(context, listen: false);
-    final response = await http
-        .delete(Uri.parse('$uri/api/process/${myProvider.id}/chamSoc/KTT/$id'));
-    if (response.statusCode == 200) {
-      print(response.body);
-    }
+    getPhanbon();
   }
 
   @override
@@ -83,7 +77,7 @@ class _ManageKTTState extends State<ManageKTT> {
         ),
         backgroundColor: const Color(0xff91CD00),
         centerTitle: true,
-        title: const Text("Kỹ thuật trồng"),
+        title: const Text("Phân bón"),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -100,53 +94,52 @@ class _ManageKTTState extends State<ManageKTT> {
           ),
         ),
         child: ListView.builder(
-          itemCount: ktt.length,
+          itemCount: phanbonList.length,
           itemBuilder: (context, index) {
-            KyThuatTrong item = ktt[index];
+            PhanBon item = phanbonList[index];
             return Card(
                 color: Colors.white,
                 child: ListTile(
-                  title: Text(item.tenKyThuat.toString()),
+                  title: Text(item.tenLoaiPhan.toString()),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.edit),
+                        icon: Icon(Icons.edit),
                         color: Colors.red,
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => editKTT(id: item.id,),
+                              builder: (context) => editPhanBon(
+                                id: item.id,
+                              ),
                             ),
                           );
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete),
+                        icon: Icon(Icons.delete),
                         color: Colors.red,
                         onPressed: () {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text('Xác nhận'),
-                              content: const Text('Bạn có chắc muốn xoá mục này?'),
+                              title: Text('Xác nhận'),
+                              content: Text('Bạn có chắc muốn xoá mục này?'),
                               actions: [
                                 TextButton(
                                   onPressed: () {
-                                    setState(() {
-                                      deleteKTT(item.id);
-                                      ktt.removeAt(index);
-                                    });
+                                    setState(() {});
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('Đồng ý'),
+                                  child: Text('Đồng ý'),
                                 ),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('Hủy'),
+                                  child: Text('Hủy'),
                                 ),
                               ],
                             ),

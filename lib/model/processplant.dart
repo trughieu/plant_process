@@ -14,7 +14,7 @@ class ProcessPlant {
   Map<String, dynamic> toJson() {
     return {
       'id_plant': idPlant,
-      'loaiCay':loaiCay,
+      'loaiCay': loaiCay,
       'cachTrong': cachTrong.toJson(),
       'chamSoc': chamSoc.toJson(),
     };
@@ -158,8 +158,10 @@ class PhanBon {
   final String moTa;
   final String imgPB;
   final String huongDan;
+  final String id;
 
   PhanBon({
+    required this.id,
     required this.tenLoaiPhan,
     required this.moTa,
     required this.imgPB,
@@ -180,11 +182,13 @@ class PhongSauBenh {
   final String tenLoaiSB;
   final String moTa;
   final String cachPhongTru;
+  String? id;
 
   PhongSauBenh({
     required this.tenLoaiSB,
     required this.moTa,
     required this.cachPhongTru,
+
   });
 
   Map<String, dynamic> toJson() {

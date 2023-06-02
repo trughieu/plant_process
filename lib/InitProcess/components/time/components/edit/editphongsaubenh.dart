@@ -6,44 +6,74 @@ import 'package:plant_process/model/utilities.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../../../../../model/plant_provider.dart';
+import '../../../../../model/saubenh.dart';
 
-class editKTT extends StatefulWidget {
-  static String routeName = '/editKTT';
+class editPSB extends StatefulWidget {
   final String id;
 
-  editKTT({Key? key, required this.id}) : super(key: key);
+  const editPSB({Key? key, required this.id}) : super(key: key);
 
   @override
-  State<editKTT> createState() => _editKTTState();
+  State<editPSB> createState() => _editPSBState();
 }
 
-class _editKTTState extends State<editKTT> {
+class _editPSBState extends State<editPSB> {
   String url = Utilities.url;
-  List<KyThuatTrong> kythuattrong = [];
+  List<sauBenh> saubenhList = [];
   final _formKey = GlobalKey<FormState>();
-  final _tenKyThuat = TextEditingController();
+  final _tenLoaiSB = TextEditingController();
   final _moTa = TextEditingController();
-  final _huongDan = TextEditingController();
+  final _cachPhongTru = TextEditingController();
 
-  void getKTT() async {
+  void getPSB() async {
     PlantProvider myProvider =
         Provider.of<PlantProvider>(context, listen: false);
-    final response = await http.get(Uri.parse(
-        '$url/api/process/${myProvider.id}/chamSoc/KTT/${widget.id}'));
+
+    final response = await http.get(Uri.parse('$url/api/process'));
+    if (response.statusCode == 200) {
+      final process = jsonDecode(response.body);
+      var pro = process['process'];
+      for (var p in pro) {
+        var idplant = p['id_plant'];
+        var saubenh = p['chamSoc']['phongSauBenh'];
+        if (idplant == myProvider.id) {
+          for (var pb in saubenh) {
+            var cachPhongTru = pb['cachPhongTru'];
+            var mota = pb['moTa'];
+            var tenloaiSB = pb['tenLoaiSB'];
+            var phanBonObj = sauBenh(
+                cachPhongTru: cachPhongTru,
+                mota: mota,
+                tenloaiSB: tenloaiSB,
+                id: '');
+            setState(() {
+              _moTa.text = mota;
+              _cachPhongTru.text = cachPhongTru;
+              _tenLoaiSB.text = tenloaiSB;
+            });
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  void updatePSB() async {
+    Map<String, dynamic> updateData = {
+      'tenLoaiSB': _tenLoaiSB.text,
+      'moTa': _moTa.text,
+      'cachPhongTru': _cachPhongTru.text,
+    };
+
+    PlantProvider myProvider =
+        Provider.of<PlantProvider>(context, listen: false);
+    final response = await http.put(
+      Uri.parse('$url/api/process/${myProvider.id}/chamSoc/psb/${widget.id}'),
+      body: jsonEncode(updateData),
+      headers: {'Content-Type': 'application/json'},
+    );
     if (response.statusCode == 200) {
       print(response.body);
-      final kyThuatTrong = jsonDecode(response.body);
-      String tenKyThuat = kyThuatTrong['tenKyThuat'];
-      String moTa = kyThuatTrong['moTa'];
-      String huongDan = kyThuatTrong['huongDan'];
-
-      setState(() {
-        _huongDan.text = huongDan;
-        _moTa.text = moTa;
-        _tenKyThuat.text = tenKyThuat;
-      });
-    } else {
-      print('Failed to fetch data. Error: ${response.statusCode}');
     }
   }
 
@@ -51,26 +81,7 @@ class _editKTTState extends State<editKTT> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getKTT();
-  }
-
-  void updateKTT() async {
-    Map<String, dynamic> updateData = {
-      'tenKyThuat': _tenKyThuat.text,
-      'moTa': _moTa.text,
-      'huongDan': _huongDan.text,
-    };
-
-    PlantProvider myProvider =
-        Provider.of<PlantProvider>(context, listen: false);
-    final response = await http.put(
-      Uri.parse('$url/api/process/${myProvider.id}/chamSoc/KTT/${widget.id}'),
-      body: jsonEncode(updateData),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      print(response.body);
-    }
+    getPSB();
   }
 
   @override
@@ -87,7 +98,7 @@ class _editKTTState extends State<editKTT> {
         backgroundColor: const Color(0xff91CD00),
         centerTitle: true,
         title: const Text(
-          "Khởi tạo quy trình",
+          "Phòng sâu bệnh",
           style: TextStyle(
               fontFamily: 'Inter-Medium-500.ttf',
               color: Colors.black,
@@ -116,7 +127,7 @@ class _editKTTState extends State<editKTT> {
               child: Center(
                 child: Column(
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       height: 50,
                     ),
                     Container(
@@ -125,7 +136,7 @@ class _editKTTState extends State<editKTT> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            tenKTT(),
+                            tenLoaiSB(),
                             SizedBox(
                               height: 10,
                             ),
@@ -133,16 +144,16 @@ class _editKTTState extends State<editKTT> {
                             SizedBox(
                               height: 10,
                             ),
-                            huongDan(),
+                            cachPhongTru(),
                             ElevatedButton(
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  updateKTT();
+                                  updatePSB();
                                   Navigator.pop(context);
                                 }
                               },
-                              child: const Text('Lưu'),
+                              child: Text('Lưu'),
                             ),
                           ],
                         ),
@@ -158,11 +169,11 @@ class _editKTTState extends State<editKTT> {
     );
   }
 
-  TextFormField tenKTT() {
+  TextFormField tenLoaiSB() {
     return TextFormField(
-      controller: _tenKyThuat,
+      controller: _tenLoaiSB,
       decoration: InputDecoration(
-        hintText: 'Tên kỹ thuật',
+        hintText: 'Thời gian thu hoạch',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -171,7 +182,7 @@ class _editKTTState extends State<editKTT> {
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
       onSaved: (value) {
-        _tenKyThuat.text = value!;
+        _tenLoaiSB.text = value!;
       },
     );
   }
@@ -180,7 +191,7 @@ class _editKTTState extends State<editKTT> {
     return TextFormField(
       controller: _moTa,
       decoration: InputDecoration(
-        labelText: 'Mô tả',
+        labelText: 'Bảo quản',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -194,11 +205,11 @@ class _editKTTState extends State<editKTT> {
     );
   }
 
-  Widget huongDan() {
+  TextFormField cachPhongTru() {
     return TextFormField(
-      controller: _huongDan,
+      controller: _cachPhongTru,
       decoration: InputDecoration(
-        labelText: 'Hướng dẫn',
+        labelText: 'Nội dung',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -207,7 +218,7 @@ class _editKTTState extends State<editKTT> {
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
       onSaved: (value) {
-        _huongDan.text = value!;
+        _cachPhongTru.text = value!;
       },
     );
   }

@@ -188,10 +188,15 @@ class _GieoStrongScreenState extends State<GieoStrongScreen> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               nhietDo(),
+                              SizedBox(height: 10,),
                               anhSang(),
+                              SizedBox(height: 10,),
                               nuoc(),
+                              SizedBox(height: 10,),
                               doAm(),
+                              SizedBox(height: 10,),
                               chatLuongKK(),
+                              SizedBox(height: 10,),
                               moTa(),
                               ElevatedButton(
                                 onPressed: () async {
@@ -220,81 +225,148 @@ class _GieoStrongScreenState extends State<GieoStrongScreen> {
     );
   }
 
-  TextFormField nhietDo() {
-      return TextFormField(
+  Widget nhietDo() {
+    return TextFormField(
       controller: _nhietDo,
-      decoration: const InputDecoration(
-        hintText: "Nhiệt độ",
+      decoration: InputDecoration(
+        labelText: 'Nhiệt độ',
+        hintText: 'Thời gian thu hoạch',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _nhietDo.text = pass!;
+      textInputAction: TextInputAction.newline,
+      onSaved: (value) {
+        _nhietDo.text = value!;
       },
     );
   }
 
-  TextFormField anhSang() {
+  Widget anhSang() {
     return TextFormField(
       controller: _anhSang,
-      decoration: const InputDecoration(
-        labelText: "Ánh sáng",
+      decoration: InputDecoration(
+        labelText: 'Ánh sáng',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _anhSang.text = pass!;
+      onSaved: (value) {
+        setState(() {
+          _anhSang.text = value!;
+        });
+        // Xử lý sự kiện khi giá trị thay đổi
       },
     );
   }
 
-  TextFormField nuoc() {
+  Widget nuoc() {
     return TextFormField(
       controller: _nuoc,
-      decoration: const InputDecoration(
-        labelText: "Nước",
+      decoration: InputDecoration(
+        labelText: 'Nước',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _nuoc.text = pass!;
-      },
-    );
-  }
-  TextFormField doAm() {
-    return TextFormField(
-      controller: _doAm,
-      decoration: const InputDecoration(
-        labelText: "Độ ẩm",
-      ),
-      onSaved: (pass) {
-        _doAm.text = pass!;
-      },
-    );
-  } TextFormField chatLuongKK() {
-    return TextFormField(
-      controller: _chatLuongKk,
-      decoration: const InputDecoration(
-        labelText: "Chất lượng không khí",
-      ),
-      onSaved: (pass) {
-        _chatLuongKk.text = pass!;
+      onSaved: (value) {
+        setState(() {
+          _nuoc.text = value!;
+        });
+        // Xử lý sự kiện khi giá trị thay đổi
       },
     );
   }
 
-  TextFormField moTa() {
+  Widget doAm() {
     return TextFormField(
-      controller: _moTaThem,
-      decoration: const InputDecoration(
-        labelText: "Mô tả",
+      controller: _doAm,
+      decoration: InputDecoration(
+        labelText: 'Độ ẩm',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _moTaThem.text = pass!;
+      onSaved: (value) {
+        setState(() {
+          _doAm.text = value!;
+        });
+        // Xử lý sự kiện khi giá trị thay đổi
       },
     );
-  } TextFormField thoiVu() {
+  }
+
+  Widget chatLuongKK() {
+    return TextFormField(
+      controller: _chatLuongKk,
+      decoration: InputDecoration(
+        labelText: 'Chất lượng không khí',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+      onSaved: (value) {
+        setState(() {
+          _chatLuongKk.text = value!;
+        });
+        // Xử lý sự kiện khi giá trị thay đổi
+      },
+    );
+  }
+
+  Widget moTa() {
+    return TextFormField(
+      controller: _moTaThem,
+      decoration: InputDecoration(
+        labelText: 'Mô tả',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+      onSaved: (value) {
+        setState(() {
+          _moTaThem.text = value!;
+        });
+        // Xử lý sự kiện khi giá trị thay đổi
+      },
+    );
+  }
+
+  Widget thoiVu() {
     return TextFormField(
       controller: _thoiVu,
-      decoration: const InputDecoration(
-        labelText: "nội dung",
+      decoration: InputDecoration(
+        labelText: 'Nội dung',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _thoiVu.text = pass!;
+      onSaved: (value) {
+        setState(() {
+          _thoiVu.text = value!;
+        });
+        // Xử lý sự kiện khi giá trị thay đổi
       },
     );
   }

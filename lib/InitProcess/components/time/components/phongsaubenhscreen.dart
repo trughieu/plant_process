@@ -166,7 +166,9 @@ class _SauBenhScreenState extends State<SauBenhScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             tenLoaiSB(),
+                            SizedBox(height: 10,),
                             moTa(),
+                            SizedBox(height: 10,),
                             cachPhongTru(),
                             ElevatedButton(
                               onPressed: () async {
@@ -198,11 +200,17 @@ class _SauBenhScreenState extends State<SauBenhScreen> {
   TextFormField tenLoaiSB() {
     return TextFormField(
       controller: _tenLoaiSB,
-      decoration: const InputDecoration(
-        hintText: "Thời gian thu hoạch",
+      decoration: InputDecoration(
+        hintText: 'Thời gian thu hoạch',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _tenLoaiSB.text = pass!;
+      onSaved: (value) {
+        _tenLoaiSB.text = value!;
       },
     );
   }
@@ -210,11 +218,17 @@ class _SauBenhScreenState extends State<SauBenhScreen> {
   TextFormField moTa() {
     return TextFormField(
       controller: _moTa,
-      decoration: const InputDecoration(
-        labelText: "Bảo quản",
+      decoration: InputDecoration(
+        labelText: 'Bảo quản',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _moTa.text = pass!;
+      onSaved: (value) {
+        _moTa.text = value!;
       },
     );
   }
@@ -222,11 +236,17 @@ class _SauBenhScreenState extends State<SauBenhScreen> {
   TextFormField cachPhongTru() {
     return TextFormField(
       controller: _cachPhongTru,
-      decoration: const InputDecoration(
-        labelText: "nội dung",
+      decoration: InputDecoration(
+        labelText: 'Nội dung',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _cachPhongTru.text = pass!;
+      onSaved: (value) {
+        _cachPhongTru.text = value!;
       },
     );
   }

@@ -49,6 +49,7 @@ class _InfoState extends State<Info> {
             var imgUri = Uri.parse(uri).resolve(plant['img_av']).toString();
             var name = plant['name'].toString();
             var des = plant['description'].toString();
+            print("dauidhauiod"+imgUri);
             // Load the image and store it in the process object
             p.image = imgUri.toString();
             p.name = name;

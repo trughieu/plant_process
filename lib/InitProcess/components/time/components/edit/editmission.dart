@@ -1,13 +1,17 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:plant_process/InitProcess/components/time/components/edit/editphanbon.dart';
+import 'package:plant_process/InitProcess/components/time/components/edit/editthuyloi.dart';
 import 'package:plant_process/InitProcess/components/time/components/edit/gieotrong.dart';
 import 'package:plant_process/InitProcess/components/time/components/edit/editktt.dart';
-import 'package:plant_process/InitProcess/components/time/components/edit/thuhoach.dart';
+import 'package:plant_process/InitProcess/components/time/components/edit/managePSB.dart';
+import 'package:plant_process/InitProcess/components/time/components/edit/editthuhoach.dart';
 import 'package:plant_process/model/mission.dart';
 import 'package:plant_process/model/utilities.dart';
 import 'package:http/http.dart' as http;
 
 import 'manageKTT.dart';
+import 'managePhanbon.dart';
 
 
 class editMission extends StatefulWidget {
@@ -102,6 +106,13 @@ class _editMissionState extends State<editMission> {
                                 Navigator.pushNamed(context, editGieoTrong.routeName);
                               }  else if (mission[index].type == 'KY_THUAT') {
                                 Navigator.pushNamed(context, ManageKTT.routeName);
+                              }else if (mission[index].type == 'BON_PHAN') {
+                                Navigator.pushNamed(context, ManagePhanBon.routeName);
+                              }
+                              else if (mission[index].type == 'THUY_LOI') {
+                                Navigator.pushNamed(context, editThuyLoi.routeName);
+                              }else if (mission[index].type == 'PHONG_SAU_BENH') {
+                                Navigator.pushNamed(context, ManagePSB.routeName);
                               }
                             });
                       }),

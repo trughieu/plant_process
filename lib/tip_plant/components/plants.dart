@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plant_process/HomePage/components/mission.dart';
+import 'package:plant_process/tip_plant/components/Stage.dart';
 import 'package:plant_process/tip_plant/components/follow_mission.dart';
 import 'package:plant_process/tip_plant/components/mission/gieotrong.dart';
 import 'package:plant_process/tip_plant/components/select_plant.dart';
@@ -158,11 +159,24 @@ class _PlantState extends State<Plant> {
                         border: Border.all(color: Color(0xfffecb02)),
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         color: Colors.white),
-                    child: const Center(
-                      child: Text(
-                        "Theo Giai Đoạn",
-                        style:
-                            TextStyle(color: Color(0xff116000), fontSize: 30),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Stage(
+                                    image: widget.img, name: widget.name)));
+
+                        PlantProvider myProvider =
+                        Provider.of<PlantProvider>(context, listen: false);
+                        print(myProvider.id);
+                      },
+                      child: const Center(
+                        child: Text(
+                          "Theo Giai Đoạn",
+                          style:
+                              TextStyle(color: Color(0xff116000), fontSize: 30),
+                        ),
                       ),
                     ),
                   ),

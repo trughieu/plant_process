@@ -1,28 +1,28 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:plant_process/InitProcess/components/time/components/edit/editktt.dart';
-
-import '../../../../../model/kythuattrong.dart';
+import 'package:plant_process/InitProcess/components/time/components/edit/editphanbon.dart';
+import 'package:plant_process/InitProcess/components/time/components/edit/editphongsaubenh.dart';
 import '../../../../../model/plant_provider.dart';
+import '../../../../../model/saubenh.dart';
 import '../../../../../model/utilities.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-class ManageKTT extends StatefulWidget {
-  static String routeName = '/manageKTT';
+class ManagePSB extends StatefulWidget {
+  static String routeName = '/managePSB';
 
-  const ManageKTT({Key? key}) : super(key: key);
+  const ManagePSB({Key? key}) : super(key: key);
 
   @override
-  State<ManageKTT> createState() => _ManageKTTState();
+  State<ManagePSB> createState() => _ManagePSBState();
 }
 
-class _ManageKTTState extends State<ManageKTT> {
+class _ManagePSBState extends State<ManagePSB> {
   String uri = Utilities.url;
-  List<KyThuatTrong> ktt = [];
+  List<sauBenh> psb = [];
 
-  void getKTT() async {
+  void getPSB() async {
     PlantProvider myProvider =
         Provider.of<PlantProvider>(context, listen: false);
     final response = await http.get(Uri.parse('$uri/api/process'));
@@ -31,21 +31,20 @@ class _ManageKTTState extends State<ManageKTT> {
       var pro = process['process'];
       for (var p in pro) {
         var idplant = p['id_plant'];
-        var phanBon = p['chamSoc']['kyThuatTrong'];
+        var saubenh = p['chamSoc']['phongSauBenh'];
         if (idplant == myProvider.id) {
-          for (var pb in phanBon) {
-            var tenKyThuat = pb['tenKyThuat'];
-            var moTa = pb['moTa'];
-            var huongDan = pb['huongDan'];
+          for (var pb in saubenh) {
+            var cachPhongTru = pb['cachPhongTru'];
+            var mota = pb['moTa'];
+            var tenloaiSB = pb['tenLoaiSB'];
             var id = pb['_id'];
-            var phanBonObj = KyThuatTrong(
-                tenKyThuat: tenKyThuat,
-                moTa: moTa,
-                img_KT: '',
-                huongDan: huongDan,
+            var saubenhh = sauBenh(
+                tenloaiSB: tenloaiSB,
+                mota: mota,
+                cachPhongTru: cachPhongTru,
                 id: id);
             setState(() {
-              ktt.add(phanBonObj);
+              psb.add(saubenhh);
             });
           }
           break;
@@ -54,20 +53,21 @@ class _ManageKTTState extends State<ManageKTT> {
     }
   }
 
+  void deletePSB(String id) async {
+    PlantProvider myProvider =
+        Provider.of<PlantProvider>(context, listen: false);
+    final response = await http
+        .delete(Uri.parse('$uri/api/process/${myProvider.id}/chamSoc/psb/$id'));
+    if (response.statusCode == 200) {
+      print(response.body);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getKTT();
-  }
-  void deleteKTT(String id) async {
-    PlantProvider myProvider =
-    Provider.of<PlantProvider>(context, listen: false);
-    final response = await http
-        .delete(Uri.parse('$uri/api/process/${myProvider.id}/chamSoc/KTT/$id'));
-    if (response.statusCode == 200) {
-      print(response.body);
-    }
+    getPSB();
   }
 
   @override
@@ -83,7 +83,7 @@ class _ManageKTTState extends State<ManageKTT> {
         ),
         backgroundColor: const Color(0xff91CD00),
         centerTitle: true,
-        title: const Text("Kỹ thuật trồng"),
+        title: const Text("Phòng sâu bệnh"),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -100,53 +100,55 @@ class _ManageKTTState extends State<ManageKTT> {
           ),
         ),
         child: ListView.builder(
-          itemCount: ktt.length,
+          itemCount: psb.length,
           itemBuilder: (context, index) {
-            KyThuatTrong item = ktt[index];
+            sauBenh item = psb[index];
             return Card(
                 color: Colors.white,
                 child: ListTile(
-                  title: Text(item.tenKyThuat.toString()),
+                  title: Text(item.tenloaiSB.toString()),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.edit),
+                        icon: Icon(Icons.edit),
                         color: Colors.red,
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => editKTT(id: item.id,),
+                              builder: (context) => editPSB(
+                                id: item.id,
+                              ),
                             ),
                           );
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete),
+                        icon: Icon(Icons.delete),
                         color: Colors.red,
                         onPressed: () {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: const Text('Xác nhận'),
-                              content: const Text('Bạn có chắc muốn xoá mục này?'),
+                              title: Text('Xác nhận'),
+                              content: Text('Bạn có chắc muốn xoá mục này?'),
                               actions: [
                                 TextButton(
                                   onPressed: () {
                                     setState(() {
-                                      deleteKTT(item.id);
-                                      ktt.removeAt(index);
+                                      deletePSB(item.id);
+                                      psb.removeAt(index);
                                     });
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('Đồng ý'),
+                                  child: Text('Đồng ý'),
                                 ),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: const Text('Hủy'),
+                                  child: Text('Hủy'),
                                 ),
                               ],
                             ),

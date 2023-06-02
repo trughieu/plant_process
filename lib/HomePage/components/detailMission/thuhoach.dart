@@ -23,7 +23,7 @@ class _ThuHoachState extends State<ThuHoach> {
   String url = Utilities.url;
   List<thuHoach> thuhoachList = [];
 
-  void getPhanbon() async {
+  void getThuhoach() async {
     PlantProvider myProvider =
         Provider.of<PlantProvider>(context, listen: false);
     final response = await http.get(Uri.parse('$url/api/process'));
@@ -34,18 +34,18 @@ class _ThuHoachState extends State<ThuHoach> {
         var idplant = p['id_plant'];
         var phanBon = p['chamSoc']['thuHoach'];
         if (idplant == myProvider.id) {
-              var thoigianTH = phanBon['thoiGianTH'];
-              var baoQuan = phanBon['baoQuan'];
-              var noiDung = phanBon['noiDung'];
-              print(thoigianTH);
+          var thoigianTH = phanBon['thoiGianTH'];
+          var baoQuan = phanBon['baoQuan'];
+          var noiDung = phanBon['noiDung'];
+          print(thoigianTH);
 
-              print(baoQuan);
-              print(noiDung);
-              var tuoinuoc = thuHoach(
-                  baoQuan: baoQuan, noiDung: noiDung, thoigianTH: thoigianTH);
-              setState(() {
-                thuhoachList.add(tuoinuoc);
-              });
+          print(baoQuan);
+          print(noiDung);
+          var tuoinuoc = thuHoach(
+              baoQuan: baoQuan, noiDung: noiDung, thoigianTH: thoigianTH);
+          setState(() {
+            thuhoachList.add(tuoinuoc);
+          });
 
           break;
         }
@@ -57,7 +57,7 @@ class _ThuHoachState extends State<ThuHoach> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPhanbon();
+    getThuhoach();
   }
 
   @override
@@ -105,17 +105,41 @@ class _ThuHoachState extends State<ThuHoach> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 16),
-                    Text(
-                      'thoi gian thu hoach: ${thuhoachList[0].thoigianTH}',
-                      style: TextStyle(fontSize: 16),
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        children: [
+                          TextSpan(
+                            text: 'Thời gian thu hoạch: ',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(text: '${thuhoachList[0].thoigianTH}'),
+                        ],
+                      ),
                     ),
-                    Text(
-                      'Nội dung: ${thuhoachList[0].noiDung}',
-                      style: TextStyle(fontSize: 16),
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        children: [
+                          TextSpan(
+                            text: 'Nội dung: ',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(text: '${thuhoachList[0].noiDung}'),
+                        ],
+                      ),
                     ),
-                    Text(
-                      'Bảo quản: ${thuhoachList[0].baoQuan}',
-                      style: TextStyle(fontSize: 16),
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        children: [
+                          TextSpan(
+                            text: 'Bảo quản: ',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(text: '${thuhoachList[0].baoQuan}'),
+                        ],
+                      ),
                     ),
                   ],
                 ),

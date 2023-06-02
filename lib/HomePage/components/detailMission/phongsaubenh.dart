@@ -22,7 +22,7 @@ class _phongSauBenhState extends State<phongSauBenh> {
   String url = Utilities.url;
   List<sauBenh> saubenhList = [];
 
-  void getPhanbon() async {
+  void getPSB() async {
     PlantProvider myProvider =
         Provider.of<PlantProvider>(context, listen: false);
 
@@ -32,14 +32,17 @@ class _phongSauBenhState extends State<phongSauBenh> {
       var pro = process['process'];
       for (var p in pro) {
         var idplant = p['id_plant'];
-        var phanBon = p['chamSoc']['phongSauBenh'];
+        var saubenh = p['chamSoc']['phongSauBenh'];
         if (idplant == myProvider.id) {
-          for (var pb in phanBon) {
+          for (var pb in saubenh) {
             var cachPhongTru = pb['cachPhongTru'];
             var mota = pb['moTa'];
             var tenloaiSB = pb['tenLoaiSB'];
             var phanBonObj = sauBenh(
-                cachPhongTru: cachPhongTru, mota: mota, tenloaiSB: tenloaiSB);
+                cachPhongTru: cachPhongTru,
+                mota: mota,
+                tenloaiSB: tenloaiSB,
+                id: '');
             setState(() {
               saubenhList.add(phanBonObj);
             });
@@ -54,7 +57,7 @@ class _phongSauBenhState extends State<phongSauBenh> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPhanbon();
+    getPSB();
   }
 
   @override
@@ -94,7 +97,9 @@ class _phongSauBenhState extends State<phongSauBenh> {
                     child: widget.mission.img,
                   )),
               Expanded(
-                child: ListView.builder(
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView.builder(
                   itemCount: saubenhList.length,
                   itemBuilder: (context, index) {
                     var phanBon = saubenhList[index];
@@ -122,8 +127,7 @@ class _phongSauBenhState extends State<phongSauBenh> {
                           SizedBox(height: 10),
                           Text(
                             phanBon.mota,
-                            style: TextStyle(fontSize: 16,
-                                color: Colors.black),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
                           ),
                           SizedBox(height: 5),
                           RichText(
@@ -150,12 +154,11 @@ class _phongSauBenhState extends State<phongSauBenh> {
                       ),
                       onTap: () {
                         // Xử lý sự kiện khi người dùng chọn một đối tượng PhanBon
-
                       },
                     );
                   },
                 ),
-              ),
+              )),
             ])));
   }
 }

@@ -25,7 +25,7 @@ class _KttState extends State<Ktt> {
 
   void getKTT() async {
     PlantProvider myProvider =
-    Provider.of<PlantProvider>(context, listen: false);
+        Provider.of<PlantProvider>(context, listen: false);
 
     final response = await http.get(Uri.parse('$url/api/process'));
     if (response.statusCode == 200) {
@@ -40,7 +40,12 @@ class _KttState extends State<Ktt> {
             var moTa = pb['moTa'];
             var huongDan = pb['huongDan'];
 
-            var phanBonObj = KyThuatTrong(tenKyThuat: tenKyThuat, moTa: moTa, img_KT: '', huongDan: huongDan, id: '');
+            var phanBonObj = KyThuatTrong(
+                tenKyThuat: tenKyThuat,
+                moTa: moTa,
+                img_KT: '',
+                huongDan: huongDan,
+                id: '');
             setState(() {
               kythuattrong.add(phanBonObj);
             });
@@ -57,7 +62,6 @@ class _KttState extends State<Ktt> {
     super.initState();
     getKTT();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,64 +100,66 @@ class _KttState extends State<Ktt> {
                     child: widget.mission.img,
                   )),
               Expanded(
-                child: ListView.builder(
-                  itemCount: kythuattrong.length,
-                  itemBuilder: (context, index) {
-                    var phanBon = kythuattrong[index];
-                    return ListTile(
-                      contentPadding: EdgeInsets.all(0),
-                      title: RichText(
-                        text: TextSpan(
-                          style: DefaultTextStyle.of(context).style,
-                          children: [
-                            TextSpan(
-                              text: phanBon.tenKyThuat,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.black,
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView.builder(
+                    itemCount: kythuattrong.length,
+                    itemBuilder: (context, index) {
+                      var phanBon = kythuattrong[index];
+                      return ListTile(
+                        contentPadding: EdgeInsets.all(0),
+                        title: RichText(
+                          text: TextSpan(
+                            style: DefaultTextStyle.of(context).style,
+                            children: [
+                              TextSpan(
+                                text: phanBon.tenKyThuat,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                ),
                               ),
+                              const TextSpan(text: '  '),
+                            ],
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 10),
+                            Text(
+                              phanBon.moTa,
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.black),
                             ),
-                            const TextSpan(text: '  '),
+                            SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Hướng dẫn: ',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: phanBon.huongDan,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 10),
-                          Text(
-                            phanBon.moTa,
-                            style: TextStyle(fontSize: 16,
-                                color: Colors.black),
-                          ),
-                          SizedBox(height: 5),
-                          RichText(
-                            text: TextSpan(
-                              text: 'Hướng dẫn: ',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: phanBon.huongDan,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      onTap: () {
-                      },
-                    );
-                  },
+                        onTap: () {},
+                      );
+                    },
+                  ),
                 ),
               ),
             ])));

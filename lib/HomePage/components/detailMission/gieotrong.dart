@@ -38,9 +38,6 @@ class _gieoTrongState extends State<gieoTrong> {
           var ngoaiCanh = gieotrongData['ngoaiCanh'];
           var mota = ngoaiCanh['moTa'];
           var huongDan = gieotrongData['thoiVu'];
-          print("aa$tenLoaiPhan");
-          print(mota);
-          print(huongDan);
 
           var gieoTrongObj = GieoTrong(
             ngoaiCanh: NgoaiCanh(

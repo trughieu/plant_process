@@ -22,7 +22,7 @@ class _thuyLoiState extends State<thuyLoi> {
   String url = Utilities.url;
   List<TuoiNuoc> tuoinuoclist = [];
 
-  void getPhanbon() async {
+  void getThuyloi() async {
     PlantProvider myProvider =
         Provider.of<PlantProvider>(context, listen: false);
 
@@ -37,9 +37,7 @@ class _thuyLoiState extends State<thuyLoi> {
           var ngaytuoi = phanBon['ngayTuoi'];
           var thoigian = phanBon['thoiGianTuoi'];
           var huongDan = phanBon['huongDan'];
-          print("1212$thoigian");
-          print("111$ngaytuoi");
-          print("222$huongDan");
+
 
           var tuoinuoc = TuoiNuoc(
               huongDan: huongDan, thoiGianTuoi: thoigian, ngayTuoi: ngaytuoi);
@@ -57,7 +55,7 @@ class _thuyLoiState extends State<thuyLoi> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPhanbon();
+    getThuyloi();
   }
 
   @override

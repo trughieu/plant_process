@@ -12,6 +12,7 @@ import 'package:plant_process/model/saubenh.dart';
 import 'package:plant_process/model/utilities.dart';
 import 'package:http/http.dart' as http;
 
+import 'detailMission/chongiong.dart';
 import 'detailMission/thuyloi.dart';
 
 class MissionPlant extends StatefulWidget {
@@ -150,6 +151,12 @@ class _MissionPlantState extends State<MissionPlant> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         ThuHoach(mission: mission[index])));
+                          }else if (mission[index].type == 'CHON_GIONG_CAY') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ChonGiong(mission: mission[index])));
                           }
                         });
                   }),

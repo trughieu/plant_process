@@ -48,8 +48,6 @@ class _editGieoTrongState extends State<editGieoTrong> {
           var ngoaiCanh = gieotrongData['ngoaiCanh'];
           var mota = ngoaiCanh['moTa'];
           var thoivu = gieotrongData['thoiVu'];
-          print("aa$tenLoaiPhan");
-          print(mota);
 
           var gieoTrongObj = GieoTrong(
             ngoaiCanh: NgoaiCanh(
@@ -76,6 +74,53 @@ class _editGieoTrongState extends State<editGieoTrong> {
     }
   }
 
+
+  void uploadGieoTrong() async {
+    PlantProvider myProvider =
+    Provider.of<PlantProvider>(context, listen: false);
+    final idPlant = myProvider.id;
+    String nhietDo = _nhietDo.text;
+    String anhSang = _anhSang.text;
+    String nuoc = _nuoc.text;
+    String doAm = _doAm.text;
+    String chatLuongKK = _chatLuongKk.text;
+    String moTa = _moTaThem.text;
+    String thoivu = _thoiVu.text;
+
+    NgoaiCanh ngoaiCanh = NgoaiCanh(
+        nhietDo: nhietDo,
+        anhSang: anhSang,
+        nuoc: nuoc,
+        doAm: doAm,
+        chatLuongKK: chatLuongKK,
+        moTaThem: moTa);
+
+    final response = await http.get(Uri.parse('$url/api/process/'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final plants = data['process'];
+      final processExists =
+      plants.any((plant) => plant['id_plant'] == myProvider.id);
+      if (processExists) {
+        print(processExists);
+        final res = await http.put(
+          Uri.parse('$url/api/process/$idPlant/cachTrong/gieoTrong/ngoaiCanh'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({'ngoaiCanh': ngoaiCanh.toJson()}),
+        );
+        if (res.statusCode == 200) {
+          print(res.body);
+        } else {
+          print(res.body);
+        }
+      } else {
+        print('Process does not exist for plant with ID: ${myProvider.id}');
+      }
+    } else {
+      print('Failed to fetch data. Error: ${response.statusCode}');
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -98,7 +143,7 @@ class _editGieoTrongState extends State<editGieoTrong> {
         backgroundColor: const Color(0xff91CD00),
         centerTitle: true,
         title: const Text(
-          "Khởi tạo quy trình",
+          "Gieo trồng",
           style: TextStyle(
               fontFamily: 'Inter-Medium-500.ttf',
               color: Colors.black,
@@ -149,6 +194,8 @@ class _editGieoTrongState extends State<editGieoTrong> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
+                                    uploadGieoTrong();
+                                    Navigator.pop(context);
                                     // await DatabaseHelper.instance.insertProcess(_process);
                                   }
                                 },

@@ -168,8 +168,11 @@ class _KyThuatTrongScreenState extends State<KyThuatTrongScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            SizedBox(height: 10,),
                             tenKTT(),
+                            SizedBox(height: 10,),
                             moTa(),
+                            SizedBox(height: 10,),
                             huongDan(),
                             ElevatedButton(
                               onPressed: () async {
@@ -200,11 +203,17 @@ class _KyThuatTrongScreenState extends State<KyThuatTrongScreen> {
   TextFormField tenKTT() {
     return TextFormField(
       controller: _tenKyThuat,
-      decoration: const InputDecoration(
-        hintText: "Tên kỹ thuật",
+      decoration: InputDecoration(
+        hintText: 'Tên kỹ thuật',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _tenKyThuat.text = pass!;
+      onSaved: (value) {
+        _tenKyThuat.text = value!;
       },
     );
   }
@@ -212,23 +221,35 @@ class _KyThuatTrongScreenState extends State<KyThuatTrongScreen> {
   TextFormField moTa() {
     return TextFormField(
       controller: _moTa,
-      decoration: const InputDecoration(
-        labelText: "Mô tả",
+      decoration: InputDecoration(
+        labelText: 'Mô tả',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _moTa.text = pass!;
+      onSaved: (value) {
+        _moTa.text = value!;
       },
     );
   }
 
-  TextFormField huongDan() {
+  Widget huongDan() {
     return TextFormField(
       controller: _huongDan,
-      decoration: const InputDecoration(
-        labelText: "Hướng dẫn",
+      decoration: InputDecoration(
+        labelText: 'Hướng dẫn',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
-      onSaved: (pass) {
-        _huongDan.text = pass!;
+      onSaved: (value) {
+        _huongDan.text = value!;
       },
     );
   }

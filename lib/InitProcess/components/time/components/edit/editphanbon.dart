@@ -3,98 +3,115 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:plant_process/model/processplant.dart';
 
-import '../../../../model/plant_provider.dart';
-import '../../../../model/utilities.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 
-import '../../../../provider/progressbar.dart';
+import '../../../../../model/plant_provider.dart';
+import '../../../../../model/utilities.dart';
+import '../../../../../provider/progressbar.dart';
 
-class BonPhanScreen extends StatefulWidget {
-  final DateTime dateFrom;
-  final DateTime dateTo;
-  final int selectedWeekIndex;
+class editPhanBon extends StatefulWidget {
+  final String id;
+  static String routeName = '/editPhanbon';
 
-  const BonPhanScreen(
-      {Key? key,
-      required this.dateFrom,
-      required this.dateTo,
-      required this.selectedWeekIndex})
-      : super(key: key);
+  const editPhanBon({Key? key, required this.id}) : super(key: key);
 
   @override
-  State<BonPhanScreen> createState() => _BonPhanScreenState();
+  State<editPhanBon> createState() => _editPhanBonState();
 }
 
-int getElapsedWeeks(DateTime startDate, DateTime endDate) {
-  final daysElapsed = DateTime.now().difference(startDate).inDays;
-  return (daysElapsed / 7).floor();
-}
-
-int getRemainingWeeks(
-    DateTime startDate, DateTime endDate, int selectedWeekIndex) {
-  final weeksElapsed = getElapsedWeeks(startDate, endDate);
-  return (endDate.difference(startDate).inDays / 7).ceil() -
-      weeksElapsed -
-      selectedWeekIndex;
-}
-
-class _BonPhanScreenState extends State<BonPhanScreen> {
+class _editPhanBonState extends State<editPhanBon> {
   String url = Utilities.url;
   final _formKey = GlobalKey<FormState>();
   final _tenLoaiPhan = TextEditingController();
   final _moTa = TextEditingController();
   final _huongDan = TextEditingController();
   String imagePath = '';
+  List<PhanBon> danhSachPhanBon = [];
+  List<String> phanbon = [];
 
-  bool isImageSelected() {
-    return imagePath.isNotEmpty;
-  }
-
-  void uploadBonphan() async {
+  void getPhanbon() async {
     PlantProvider myProvider =
         Provider.of<PlantProvider>(context, listen: false);
-    final idPlant = myProvider.id;
-    String tenLoaiPhan = _tenLoaiPhan.text;
-    String moTa = _moTa.text;
-    String huongDan = _huongDan.text;
-
-    final response = await http.get(Uri.parse('$url/api/process/'));
+    final response = await http.get(Uri.parse(
+        '$url/api/process/${myProvider.id}/chamSoc/phanBon/${widget.id}'));
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final plants = data['process'];
-      final processExists =
-          plants.any((plant) => plant['id_plant'] == myProvider.id);
-      if (processExists) {
-        Dio dio = Dio();
-        FormData formData = FormData.fromMap({
-          'tenLoaiPhan': tenLoaiPhan,
-          'moTa': moTa,
-          'img_PB':
-              await MultipartFile.fromFile(imagePath, filename: imagePath),
-          'huongDan': huongDan,
-        });
-        final res = await dio.post(
-          '$url/api/process/$idPlant/chamSoc/phanBon',
-          data: formData,
-        );
+      print(response.body);
+      final pb = jsonDecode(response.body);
+      var tenLoaiPhan = pb['tenLoaiPhan'];
+      var mota = pb['moTa'];
+      var huongDan = pb['huongDan'];
+      var imgUri = Uri.parse(url).resolve(pb['img_PB']).toString();
 
-        if (res.statusCode == 200) {
-          print(res.data);
-        }
-      } else {
-        print('Process does not exist for plant with ID: ${myProvider.id}');
-      }
+      setState(() {
+        _huongDan.text = huongDan;
+        _moTa.text = mota;
+        _tenLoaiPhan.text = tenLoaiPhan;
+        phanbon = [imgUri];
+      });
     } else {
       print('Failed to fetch data. Error: ${response.statusCode}');
     }
   }
 
-  void getPhanbon() async {
-    final resPB = await http.get(
-        Uri.parse('$url/api/process/645747397cd1a83b835adb0d/chamSoc/phanBon'));
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPhanbon();
+  }
+
+  bool isImageSelected() {
+    return imagePath.isNotEmpty;
+  }
+
+  void updatePhanBon() async {
+    PlantProvider myProvider = Provider.of<PlantProvider>(context, listen: false);
+    final response = await http.put(
+      Uri.parse('$url/api/process/${myProvider.id}/chamSoc/phanBon/${widget.id}'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'tenLoaiPhan': _tenLoaiPhan.text,
+        'moTa': _moTa.text,
+        'huongDan': _huongDan.text,
+        'img_PB': phanbon.isNotEmpty ? phanbon[0] : '',
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('PhanBon updated successfully');
+    } else {
+      print('Failed to update PhanBon. Error: ${response.statusCode}');
+    }
+  }
+
+  void updatePb() async {
+    PlantProvider myProvider =
+    Provider.of<PlantProvider>(context, listen: false);
+    final idPlant = myProvider.id;
+    String tenLoaiPhan = _tenLoaiPhan.text;
+    String moTa = _moTa.text;
+    String huongDan = _huongDan.text;
+
+    Dio dio = Dio();
+    FormData formData = FormData.fromMap({
+      'tenLoaiPhan': tenLoaiPhan,
+      'moTa': moTa,
+      'img_PB':
+      await MultipartFile.fromFile(imagePath, filename: imagePath),
+      'huongDan': huongDan,
+    });
+
+    final res = await dio.put(
+      '$url/api/process/$idPlant/chamSoc/phanBon/${widget.id}',
+      data: formData,
+    );
+
+    if (res.statusCode == 200) {
+      print(res.data);
+    }
   }
 
   @override
@@ -111,7 +128,7 @@ class _BonPhanScreenState extends State<BonPhanScreen> {
         backgroundColor: const Color(0xff91CD00),
         centerTitle: true,
         title: const Text(
-          "Khởi tạo quy trình",
+          "Phân bón",
           style: TextStyle(
               fontFamily: 'Inter-Medium-500.ttf',
               color: Colors.black,
@@ -137,41 +154,9 @@ class _BonPhanScreenState extends State<BonPhanScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      '${getRemainingWeeks(widget.dateFrom, widget.dateTo, widget.selectedWeekIndex)} tuần còn lại trước khi gieo hạt',
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w600),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
               child: Center(
                 child: Column(
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 50, right: 50),
-                      margin: const EdgeInsets.only(top: 20),
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      color: const Color(0x50FFFFFF),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Tuần ${widget.selectedWeekIndex}',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
                     SizedBox(
                       height: 50,
                     ),
@@ -181,21 +166,30 @@ class _BonPhanScreenState extends State<BonPhanScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
+                            SizedBox(
+                              child: phanbon.isNotEmpty
+                                  ? Image(
+                                      image: NetworkImage(phanbon[0]),
+                                    )
+                                  : CircularProgressIndicator(),
+                              height: 100,
+                            ),
                             thoiGianTH(),
-                         SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             baoQuan(),
-                            SizedBox(height: 10,),
+                            SizedBox(
+                              height: 10,
+                            ),
                             noiDung(),
                             ElevatedButton(
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   _formKey.currentState!.save();
-                                  // await DatabaseHelper.instance.insertProcess(_process);
                                   if (isImageSelected()) {
-                                    uploadBonphan();
-                                    Provider.of<ProgressProvider>(context,
-                                            listen: false)
-                                        .updateProgress();
+                                    // uploadBonphan();
+                                    updatePb();
                                     Navigator.pop(context);
                                   } else {
                                     showDialog(
@@ -254,6 +248,9 @@ class _BonPhanScreenState extends State<BonPhanScreen> {
                             // Tải hình ảnh từ thiết bị
                             final pickedFile = await ImagePicker()
                                 .pickImage(source: ImageSource.gallery);
+
+                            // Chụp hình
+                            // final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
 
                             // Xử lý pickedFile
                             if (pickedFile != null) {

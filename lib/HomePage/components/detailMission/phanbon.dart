@@ -101,7 +101,9 @@ class _PhanBonDetailState extends State<PhanBonDetail> {
                     child: widget.mission.img,
                   )),
               Expanded(
-                child: ListView.builder(
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView.builder(
                   itemCount: danhSachPhanBon.length,
                   itemBuilder: (context, index) {
                     var phanBon = danhSachPhanBon[index];
@@ -129,8 +131,7 @@ class _PhanBonDetailState extends State<PhanBonDetail> {
                           SizedBox(height: 10),
                           Text(
                             phanBon.moTa,
-                            style: TextStyle(fontSize: 16,
-                            color: Colors.black),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
                           ),
                           SizedBox(height: 5),
                           RichText(
@@ -163,7 +164,7 @@ class _PhanBonDetailState extends State<PhanBonDetail> {
                     );
                   },
                 ),
-              ),
+              )),
             ])));
   }
 }
