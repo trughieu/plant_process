@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:plant_process/InitProcess/components/classificationProcess/tabLayout_classification.dart';
+import '../../../../progressbar.dart';
+import '../../../../provider/progressbar.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget{
   const Body({Key? key}) : super(key: key);
@@ -15,7 +18,10 @@ class BodyState extends State<Body>{
 
   @override
   Widget build(BuildContext context) {
+    ProgressProvider progressProvider = Provider.of<ProgressProvider>(context);
+
     return Container(
+
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(8),
       decoration: const BoxDecoration(
@@ -32,17 +38,11 @@ class BodyState extends State<Body>{
       child: ListView(
         shrinkWrap: true,
         children: [
+          CustomProgressBar(), // Giá trị progress từ 0.0 đến 1.0
+          // Nội dung màn hình
           SizedBox(
             height: 40,
           ),
-          // Center(
-          //   child: Text("Khởi tạo quy trình", style: TextStyle(
-          //     fontFamily: 'Inter-Bold-700.ttf',
-          //     color: Colors.black,
-          //     fontWeight: FontWeight.w900,
-          //     fontSize: 30,
-          //   ),),
-          // ),
 
           SizedBox(height: 30,),
           Padding(
@@ -54,42 +54,7 @@ class BodyState extends State<Body>{
             color: Colors.black,
           ),),
           ),
-          Padding(
-              padding: EdgeInsets.only(left: 30),
-              child: Column(
-                children: [
-                  RadioListTile<Classification>(
-                      title: const Text('Ngắn ngày'),
-                      value: Classification.nganngay,
-                      groupValue: _classification,
-                      onChanged: (Classification? value){
-                        setState(() {
-                          _classification = value;
-                        });
-                      }),
-
-                  RadioListTile(
-                      title: const Text('Trung ngày'),
-                      value: Classification.trungngay,
-                      groupValue: _classification,
-                      onChanged: (Classification? value){
-                        setState(() {
-                          _classification = value;
-                        });
-                      }),
-                  RadioListTile(
-                      title: const Text('Dài ngày'),
-                      value: Classification.daingay,
-                      groupValue: _classification,
-                      onChanged: (Classification? value){
-                        setState(() {
-                          _classification = value;
-                        });
-                      }),
-                ],
-              )
-          ),
-          TabLayoutClassification()
+          SizedBox(height: 20,),
         ],
       ),
     );

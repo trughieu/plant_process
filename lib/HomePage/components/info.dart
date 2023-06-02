@@ -57,6 +57,7 @@ class _InfoState extends State<Info> {
           }
           setState(() {
             // add vao list Process
+
             process.add(p);
           });
         }

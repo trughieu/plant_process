@@ -97,17 +97,61 @@ class _thuyLoiState extends State<thuyLoi> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Ngày tưới: ${tuoinuoc.ngayTuoi}',
-                    style: TextStyle(fontSize: 16),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Ngày tưới: ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black, // Màu chữ mặc định
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '${tuoinuoc.ngayTuoi}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    'Thời gian tưới: ${tuoinuoc.thoiGianTuoi}',
-                    style: TextStyle(fontSize: 16),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Thời gian tưới: ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black, // Màu chữ mặc định
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '${tuoinuoc.thoiGianTuoi}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    'Hướng dẫn: ${tuoinuoc.huongDan}',
-                    style: TextStyle(fontSize: 16),
+                  SizedBox(height: 10,),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Hướng dẫn: ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black, // Màu chữ mặc định
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '${tuoinuoc.huongDan}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

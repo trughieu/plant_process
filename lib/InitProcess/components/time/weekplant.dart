@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../progressbar.dart';
+import '../../../provider/progressbar.dart';
 import 'components/weekdetail.dart';
-
+import 'package:provider/provider.dart';
 class WeekPLant extends StatefulWidget {
   final DateTime? dateFrom;
   final DateTime? dateTo;
@@ -38,6 +40,7 @@ class _WeekPLantState extends State<WeekPLant> {
   Widget build(BuildContext context) {
     // final weeksCount = getWeeksCount(widget.dateFrom!, widget.dateTo!);
     // int remainingDays = widget.dateTo!.difference(widget.dateFrom!).inDays + 1 - weeks * 7;
+    ProgressProvider progressProvider = Provider.of<ProgressProvider>(context);
 
     return Scaffold(
         appBar: AppBar(
@@ -78,6 +81,8 @@ class _WeekPLantState extends State<WeekPLant> {
           ),
           child: Column(
             children: [
+              CustomProgressBar(),
+              // Nội dung màn hình
               const SizedBox(
                 height: 100,
               ),

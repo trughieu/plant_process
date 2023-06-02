@@ -6,6 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:plant_process/InitProcess/components/time/components/bonphanscreen.dart';
 import 'package:plant_process/InitProcess/components/time/components/gieotrongscreen.dart';
+import 'package:plant_process/InitProcess/components/time/components/kttscreen.dart';
+import 'package:plant_process/InitProcess/components/time/components/phongsaubenhscreen.dart';
 import 'package:plant_process/InitProcess/components/time/components/thuhoachscreen.dart';
 import 'package:plant_process/InitProcess/components/time/components/thuyloiscreen.dart';
 import 'package:plant_process/model/utilities.dart';
@@ -13,6 +15,9 @@ import 'package:http/http.dart' as http;
 import 'package:plant_process/tip_plant/components/product_plant.dart';
 import 'package:plant_process/tip_plant/components/select_plant.dart';
 import '../../../../model/mission.dart';
+import '../../../../progressbar.dart';
+import '../../../../provider/progressbar.dart';
+import 'package:provider/provider.dart';
 
 class WeekDetail extends StatefulWidget {
   final DateTime dateFrom;
@@ -91,82 +96,7 @@ class _WeekDetailState extends State<WeekDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _week = TextEditingController();
-    final TextEditingController _descriptionController =
-        TextEditingController();
-
-    void _showAddTodoDialog() async {
-      String? todo1;
-      String? todo2;
-      await showDialog<String>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Thêm quy trình'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // TextField(
-                //   decoration: InputDecoration(
-                //     hintText: 'Nhập thông tin',
-                //     hintStyle: TextStyle(color: Colors.grey),
-                //     border: OutlineInputBorder(
-                //       borderRadius: BorderRadius.circular(8.0),
-                //     ),
-                //     enabledBorder: OutlineInputBorder(
-                //       borderSide: BorderSide(color: Colors.grey),
-                //       borderRadius: BorderRadius.circular(8.0),
-                //     ),
-                //     focusedBorder: OutlineInputBorder(
-                //       borderSide: BorderSide(color: Colors.blue),
-                //       borderRadius: BorderRadius.circular(8.0),
-                //     ),
-                //   ),
-                //   maxLines: null,
-                // ),
-                // SizedBox(height: 16.0),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Nhập thông tin',
-                    hintStyle: const TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.blue),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  maxLines: null,
-                )
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Hủy'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              TextButton(
-                child: const Text('Lưu'),
-                onPressed: () {
-                  Navigator.pop(context, [todo1, todo2]);
-                },
-              ),
-            ],
-          );
-        },
-      );
-
-      if (todo1 != null && todo1.isNotEmpty) {
-        // Xử lý công việc đã nhập ở đây
-      }
-    }
+    ProgressProvider progressProvider = Provider.of<ProgressProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -208,6 +138,7 @@ class _WeekDetailState extends State<WeekDetail> {
               margin: const EdgeInsets.only(top: 10),
               child: Column(
                 children: [
+                  CustomProgressBar(),
                   Center(
                     child: Text(
                       '${getRemainingWeeks(widget.dateFrom, widget.dateTo, widget.selectedWeekIndex)} tuần còn lại trước khi gieo hạt',
@@ -286,184 +217,28 @@ class _WeekDetailState extends State<WeekDetail> {
                                         dateTo: widget.dateTo,
                                         selectedWeekIndex:
                                             widget.selectedWeekIndex)));
+                          } else if (mission[index].type == 'KY_THUAT') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => KyThuatTrongScreen(
+                                        dateFrom: widget.dateFrom,
+                                        dateTo: widget.dateTo,
+                                        selectedWeekIndex:
+                                            widget.selectedWeekIndex)));
+                          } else if (mission[index].type == 'PHONG_SAU_BENH') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SauBenhScreen(
+                                        dateFrom: widget.dateFrom,
+                                        dateTo: widget.dateTo,
+                                        selectedWeekIndex:
+                                            widget.selectedWeekIndex)));
                           }
                         });
                   }),
             ))
-            // Expanded(
-            //   child: SingleChildScrollView(
-            //     child: Column(
-            //       children: [
-            //         Container(
-            //           decoration: BoxDecoration(
-            //             color: Colors.white,
-            //             borderRadius: BorderRadius.circular(8.0),
-            //           ),
-            //           width: 300,
-            //           padding: const EdgeInsets.only(left: 20, right: 10),
-            //           height: 50,
-            //           margin: const EdgeInsets.only(top: 10),
-            //           child: Row(
-            //             children: [
-            //               const Text(
-            //                 'Bón Phân Hoá Học',
-            //                 style: TextStyle(
-            //                   fontSize: 20,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //               ),
-            //               const Spacer(),
-            //               IconButton(
-            //                 onPressed: () {
-            //                   setState(() {
-            //                     int selectedWeekIndex = widget.selectedWeekIndex;
-            //                     Navigator.push(
-            //                       context,
-            //                       MaterialPageRoute(
-            //                         builder: (context) =>
-            //                             BonPhan(
-            //                               selectedWeekIndex: selectedWeekIndex,
-            //                               dateFrom: widget.dateFrom!,
-            //                               dateTo: widget.dateTo!,
-            //                             ),
-            //                         // settings: RouteSettings(arguments:{
-            //                         //   'selectedWeekIndex': selectedWeekIndex,
-            //                         //   'dateFrom': widget.dateFrom,
-            //                         //   'dateTo': widget.dateTo,
-            //                         // })
-            //                       ),
-            //                     );
-            //                   });
-            //                 },
-            //                 icon: SvgPicture.asset('asset/icon/edit.svg'),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //         Container(
-            //           decoration: BoxDecoration(
-            //             color: Colors.white,
-            //             borderRadius: BorderRadius.circular(8.0),
-            //           ),
-            //           width: 300,
-            //           padding: const EdgeInsets.only(left: 20, right: 10),
-            //           height: 50,
-            //           margin: const EdgeInsets.only(top: 10),
-            //           child: Row(
-            //             children: [
-            //               const Text(
-            //                 'Làm cỏ',
-            //                 style: TextStyle(
-            //                   fontSize: 20,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //               ),
-            //               const Spacer(),
-            //               IconButton(
-            //                 onPressed: () {
-            //                   setState(() {
-            //                     _showAddTodoDialog;
-            //                   });
-            //                 },
-            //                 icon: SvgPicture.asset('asset/icon/edit.svg'),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //         Container(
-            //           decoration: BoxDecoration(
-            //             color: Colors.white,
-            //             borderRadius: BorderRadius.circular(8.0),
-            //           ),
-            //           width: 300,
-            //           padding: const EdgeInsets.only(left: 20, right: 10),
-            //           height: 50,
-            //           margin: const EdgeInsets.only(top: 10),
-            //           child: Row(
-            //             children: [
-            //               const Text(
-            //                 'Thuỷ lợi',
-            //                 style: TextStyle(
-            //                   fontSize: 20,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //               ),
-            //               const Spacer(),
-            //               IconButton(
-            //                 onPressed: () {
-            //                   setState(() {
-            //                     _showAddTodoDialog;
-            //                   });
-            //                 },
-            //                 icon: SvgPicture.asset('asset/icon/edit.svg'),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //         Container(
-            //           decoration: BoxDecoration(
-            //             color: Colors.white,
-            //             borderRadius: BorderRadius.circular(8.0),
-            //           ),
-            //           width: 300,
-            //           padding: const EdgeInsets.only(left: 20, right: 10),
-            //           height: 50,
-            //           margin: const EdgeInsets.only(top: 10),
-            //           child: Row(
-            //             children: [
-            //               const Text(
-            //                 'Bón Phân Hữu cơ',
-            //                 style: TextStyle(
-            //                   fontSize: 20,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //               ),
-            //               const Spacer(),
-            //               IconButton(
-            //                 onPressed: () {
-            //                   setState(() {
-            //                     _showAddTodoDialog;
-            //                   });
-            //                 },
-            //                 icon: SvgPicture.asset('asset/icon/edit.svg'),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //         Container(
-            //           decoration: BoxDecoration(
-            //             color: Colors.white,
-            //             borderRadius: BorderRadius.circular(8.0),
-            //           ),
-            //           width: 300,
-            //           padding: const EdgeInsets.only(left: 20, right: 10),
-            //           height: 50,
-            //           margin: const EdgeInsets.only(top: 10),
-            //           child: Row(
-            //             children: [
-            //               const Text(
-            //                 'Biện Pháp phòng ngừa',
-            //                 style: TextStyle(
-            //                   fontSize: 20,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //               ),
-            //               const Spacer(),
-            //               IconButton(
-            //                 onPressed: () {
-            //                   setState(() {
-            //                     _showAddTodoDialog;
-            //                   });
-            //                 },
-            //                 icon: SvgPicture.asset('asset/icon/edit.svg'),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),

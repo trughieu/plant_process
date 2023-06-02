@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../progressbar.dart';
+import '../../../provider/progressbar.dart';
 import 'components/body.dart';
-
+import 'package:provider/provider.dart';
 class TimePlant extends StatefulWidget {
   static String routeName = '/timePlant';
 
@@ -14,6 +16,7 @@ class TimePlant extends StatefulWidget {
 class _TimePlantState extends State<TimePlant> {
   @override
   Widget build(BuildContext context) {
+    ProgressProvider progressProvider = Provider.of<ProgressProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -49,7 +52,9 @@ class _TimePlantState extends State<TimePlant> {
           ),
         ),
         child: Column(
-          children: const [
+          children:  [
+            CustomProgressBar(),
+            // Nội dung màn hình
             Body(),
           ],
         ),

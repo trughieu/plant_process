@@ -9,6 +9,9 @@ import 'package:http/http.dart' as http;
 import '../../../../model/plant_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../progressbar.dart';
+import '../../../../provider/progressbar.dart';
+
 class ThuHoachScreen extends StatefulWidget {
   final DateTime dateFrom;
   final DateTime dateTo;
@@ -169,6 +172,8 @@ class _ThuHoachScreenState extends State<ThuHoachScreen> {
                                   _formKey.currentState!.save();
                                   // await DatabaseHelper.instance.insertProcess(_process);
                                   uploadBonphan();
+                                  Provider.of<ProgressProvider>(context, listen: false).updateProgress();
+                                  Navigator.pop(context);
                                 }
                               },
                               child: Text('Lưu'),

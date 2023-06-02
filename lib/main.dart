@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plant_process/HomePage/homepage.dart';
 import 'package:plant_process/model/plant_provider.dart';
+import 'package:plant_process/provider/progressbar.dart';
 import 'package:plant_process/routes.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,10 @@ void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => PlantProvider(),
-    )
+    ),
+    ChangeNotifierProvider(
+      create: (context) => ProgressProvider(),
+    ),
   ], child: const MyApp()));
 }
 

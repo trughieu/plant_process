@@ -1,5 +1,6 @@
 class ProcessPlant {
   final String idPlant;
+  final String loaiCay;
   final CachTrong cachTrong;
   final ChamSoc chamSoc;
 
@@ -7,11 +8,13 @@ class ProcessPlant {
     required this.idPlant,
     required this.cachTrong,
     required this.chamSoc,
+    required this.loaiCay,
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id_plant': idPlant,
+      'loaiCay':loaiCay,
       'cachTrong': cachTrong.toJson(),
       'chamSoc': chamSoc.toJson(),
     };

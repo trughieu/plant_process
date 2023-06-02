@@ -7,6 +7,8 @@ import '../../../../model/utilities.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import '../../../../provider/progressbar.dart';
+
 class ThuyLoiScreen extends StatefulWidget {
   final DateTime dateFrom;
   final DateTime dateTo;
@@ -19,12 +21,30 @@ class ThuyLoiScreen extends StatefulWidget {
       required this.selectedWeekIndex})
       : super(key: key);
 
+
   @override
   State<ThuyLoiScreen> createState() => _ThuyLoiScreenState();
 }
 
+int getElapsedWeeks(DateTime startDate, DateTime endDate) {
+  final daysElapsed = DateTime.now().difference(startDate).inDays;
+  return (daysElapsed / 7).floor();
+}
+
+int getRemainingWeeks(
+    DateTime startDate, DateTime endDate, int selectedWeekIndex) {
+  final weeksElapsed = getElapsedWeeks(startDate, endDate);
+  return (endDate.difference(startDate).inDays / 7).ceil() -
+      weeksElapsed -
+      selectedWeekIndex;
+}
+
 class _ThuyLoiScreenState extends State<ThuyLoiScreen> {
   String url = Utilities.url;
+  final _formKey = GlobalKey<FormState>();
+  final _ngayTuoi = TextEditingController();
+  final _thoiGianTuoi = TextEditingController();
+  final _huongDan = TextEditingController();
 
   void uploadTuoiNuoc() async {
     PlantProvider myProvider =
@@ -32,9 +52,9 @@ class _ThuyLoiScreenState extends State<ThuyLoiScreen> {
     final idPlant = myProvider.id;
 
     TuoiNuoc tuoiNuoc = TuoiNuoc(
-        ngayTuoi: 'ngayTuoi',
-        thoiGianTuoi: 'thoiGianTuoi',
-        huongDan: 'huongDan');
+        ngayTuoi: _ngayTuoi.text,
+        thoiGianTuoi: _thoiGianTuoi.text,
+        huongDan: _huongDan.text);
 
     final response = await http.get(Uri.parse('$url/api/process/'));
     if (response.statusCode == 200) {
@@ -84,13 +104,131 @@ class _ThuyLoiScreenState extends State<ThuyLoiScreen> {
               fontWeight: FontWeight.w600),
         ),
       ),
-      body: ElevatedButton(
-        onPressed: () {
-          uploadTuoiNuoc();
-        },
-        child: Text('next'),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(8),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            tileMode: TileMode.clamp,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFC1FD2D),
+              Color(0xFFFFFFFF),
+            ],
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      '${getRemainingWeeks(widget.dateFrom, widget.dateTo, widget.selectedWeekIndex)} tuần còn lại trước khi gieo hạt',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(left: 50, right: 50),
+                      margin: const EdgeInsets.only(top: 20),
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      color: const Color(0x50FFFFFF),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Tuần ${widget.selectedWeekIndex}',
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ngayTuoi(),
+                            thoiGianTuoi(),
+                            huongdan(),
+                            ElevatedButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  // await DatabaseHelper.instance.insertProcess(_process);
+                                  uploadTuoiNuoc();
+                                  Provider.of<ProgressProvider>(context, listen: false).updateProgress();
+                                }
+                              },
+                              child: Text('Lưu'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+
+  TextFormField ngayTuoi() {
+    return TextFormField(
+      controller: _ngayTuoi,
+      decoration: const InputDecoration(
+        hintText: "Ngày Tưới",
+      ),
+      onSaved: (pass) {
+        _ngayTuoi.text = pass!;
+      },
+    );
+  }
+
+  TextFormField thoiGianTuoi() {
+    return TextFormField(
+      controller: _thoiGianTuoi,
+      decoration: const InputDecoration(
+        labelText: "Thời gian tưới",
+      ),
+      onSaved: (pass) {
+        _thoiGianTuoi.text = pass!;
+      },
+    );
+  }
+
+  TextFormField huongdan() {
+    return TextFormField(
+      controller: _huongDan,
+      decoration: const InputDecoration(
+        labelText: "Hướng dẫn",
+      ),
+      onSaved: (pass) {
+        _huongDan.text = pass!;
+      },
+    );
+  }
 }
+
 

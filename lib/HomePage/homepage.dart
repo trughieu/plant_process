@@ -5,6 +5,8 @@ import 'package:plant_process/HomePage/components/body.dart';
 import 'package:plant_process/HomePage/components/info.dart';
 import 'package:plant_process/tip_plant/components/select_plant.dart';
 
+import '../tip_plant/components/manage.dart';
+
 // class HomePage extends StatelessWidget {
 //   HomePage({Key? key}) : super(key: key);
 //
@@ -102,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(bottom: 20),
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.pushNamed(context, Select_plant.routeName);
+                Navigator.pushNamed(context, ItemListWidget.routeName);
               },
               backgroundColor: Colors.white,
               foregroundColor: Colors.black,

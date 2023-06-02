@@ -1,7 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:plant_process/HomePage/homepage.dart';
 import 'package:plant_process/InitProcess/components/time/weekplant.dart';
+import 'package:http/http.dart' as http;
+import 'package:plant_process/model/classify.dart';
+
+import '../../../../model/plant_provider.dart';
+import '../../../../model/utilities.dart';
+import '../../../../provider/progressbar.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -48,12 +57,40 @@ class _BodyState extends State<Body> {
     }
   }
 
+  String uri = Utilities.url;
+  List<String> classify = [];
+
+  void getBangTin() async {
+    PlantProvider myProvider =
+        Provider.of<PlantProvider>(context, listen: false);
+    print(myProvider.idLoaiCay);
+    final response =
+        await http.get(Uri.parse('$uri/api/classify/${myProvider.idLoaiCay}'));
+    if (response.statusCode == 200) {
+      print("dadad" + response.body);
+      final body = jsonDecode(response.body);
+      var loaiCay = body['classify'];
+      String char = loaiCay['char'];
+      print(char);
+      setState(() {
+        classify = [char];
+        // add vao list Process
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getBangTin();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
         width: MediaQuery.of(context).size.width,
-        child: Column(
-            children: [
+        child: Column(children: [
           const Padding(
             padding: EdgeInsets.only(top: 50),
             child: Text(
@@ -136,32 +173,27 @@ class _BodyState extends State<Body> {
                             color: Colors.black,
                           ),
                         ),
-                        // if (_selectedDate2 != null)
-                        //   Text(
-                        //     DateFormat('dd/MM/yyyy').format(_selectedDate2!),
-                        //     style: const TextStyle(
-                        //       fontSize: 16,
-                        //       color: Colors.black54,
-                        //     ),
-                        //   ),
                       ],
                     ),
                   ),
                 )
               ]),
           GestureDetector(
-            onTap: () {
-              // Xử lý khi người dùng chạm vào Container
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WeekPLant(
-                          dateFrom: _selectedDate1,
-                          dateTo: _selectedDate2,
-                        )),
-              );
-            },
+            onTap: (_selectedDate1 != null && _selectedDate2 != null)
+                ? () {
+                    // Xử lý khi người dùng chạm vào Container
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => WeekPLant(
+                                dateFrom: _selectedDate1,
+                                dateTo: _selectedDate2,
+                              )),
+                    );
+                    Provider.of<ProgressProvider>(context, listen: false)
+                        .updateProgress();
+                  }
+                : null,
             child: Container(
               margin: EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
@@ -208,7 +240,7 @@ class _BodyState extends State<Body> {
                 Container(
                   padding: EdgeInsets.only(left: 20, right: 20, bottom: 50),
                   child: Text(
-                    'Bên cạnh việc theo đuổi một nền nông nghiệp hài hòa và bền vững, thì việc trồng các loại cây nông nghiệp ngắn ngày giá trị cao sẽ cải thiện kinh tế nhanh cho bà con ở một số vùng trong nước. Với đặc điểm yêu cầu vốn đầu tư không cần lớn, kỹ thuật trồng và chăm sóc đơn giản, thời gian thu hồi vốn nhanh… cây nông nghiệp ngắn ngày nhận được sự quan tâm tìm hiểu của nhiều bà con nông dân.',
+                    classify.isNotEmpty ? classify[0] : '',
                     style: TextStyle(
                       fontSize: 20,
                       color: Color(0xFF2D7800),

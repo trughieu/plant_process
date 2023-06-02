@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 
+import '../../../../provider/progressbar.dart';
+
 class BonPhanScreen extends StatefulWidget {
   final DateTime dateFrom;
   final DateTime dateTo;
@@ -188,7 +190,8 @@ class _BonPhanScreenState extends State<BonPhanScreen> {
                                   _formKey.currentState!.save();
                                   // await DatabaseHelper.instance.insertProcess(_process);
                                   uploadBonphan();
-                                }
+                                  Provider.of<ProgressProvider>(context, listen: false).updateProgress();
+                                  Navigator.pop(context);  }
                               },
                               child: Text('Lưu'),
                             ),

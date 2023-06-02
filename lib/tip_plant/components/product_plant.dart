@@ -177,24 +177,40 @@ class _Product_plantState extends State<Product_plant> {
           baoQuan: '',
           noiDung: '',
         ),
-      ),
+      ), loaiCay: '',
     );
 
     if (idExists) {
       print(idExists);
       // Nếu id đã tồn tại, thực hiện cập nhật dữ liệu
-      final res = await http.put(
-        Uri.parse('$uri/api/process/$id'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(process.toJson()),
+      // final res = await http.put(
+      //   Uri.parse('$uri/api/process/$id'),
+      //   headers: {'Content-Type': 'application/json'},
+      //   body: json.encode(process.toJson()),
+      // );
+      //
+      // if (res.statusCode == 200) {
+      //   print(res.body);
+      // } else {
+      //   print(res.body);
+      //   throw Exception('Failed to update');
+      // }
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text('Quy trình này đã có'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                });
+                Navigator.pop(context);
+              },
+              child: Text('Đồng ý'),
+            ),
+          ],
+        ),
       );
-
-      if (res.statusCode == 200) {
-        print(res.body);
-      } else {
-        print(res.body);
-        throw Exception('Failed to update');
-      }
     } else {
       // Nếu id chưa tồn tại, thực hiện tạo dữ liệu mới
       final res = await http.post(
@@ -204,6 +220,8 @@ class _Product_plantState extends State<Product_plant> {
       );
 
       if (res.statusCode == 200) {
+        Navigator.pushNamed(
+            context, ClassificationProcesssPage.routeName);
         print(res.body);
       } else {
         print(res.body);
@@ -222,7 +240,7 @@ class _Product_plantState extends State<Product_plant> {
       return true;
     } else if (res.statusCode == 404) {
       // Dữ liệu không tồn tại
-      print('faiil');
+      print('khong ton tai');
       return false;
     } else {
       throw Exception('Failed to check id existence');
@@ -273,8 +291,7 @@ class _Product_plantState extends State<Product_plant> {
                 postProcess(selectedProductId.toString());
                 Provider.of<PlantProvider>(context, listen: false)
                     .setId(selectedProductId.toString());
-                Navigator.pushNamed(
-                    context, ClassificationProcesssPage.routeName);
+
                 print(selectedProductId);
               }
 
